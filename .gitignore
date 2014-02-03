@@ -214,5 +214,12 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-Kungsholmen-android/
+Kungsholmen-android/bin
+Kungsholmen-android/gen
+Kungsholmen-android/libs
+Kungsholmen-android/res
+Kungsholmen-android/src
+Kungsholmen-android/AndroidManifest.xml
+Kungsholmen-android/proguard.cfg
+Kungsholmen-android/project.properties
 Kungsholmen-desktop/
