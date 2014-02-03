@@ -19,7 +19,8 @@ public class GameScreen implements Screen {
     final GBS game;
 
     Texture taxiImage;
-    private Sprite taxiSprite;
+    Sprite taxiSprite;
+    Sprite KittSprite;
     Texture KittImage;
     //Sound dropSound;
     //Music rainMusic;
@@ -27,7 +28,7 @@ public class GameScreen implements Screen {
     Rectangle bucket;
     Array<Rectangle> raindrops;
     long lastDropTime;
-    int dropsGathered;
+    int fps;
 
     public GameScreen(final GBS gam) {
         this.game = gam;
@@ -36,9 +37,11 @@ public class GameScreen implements Screen {
         taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
         taxiSprite = new Sprite(taxiImage);
         //taxiSprite.setPosition(1, 1);
-        taxiSprite.setRotation(45);
+        taxiSprite.setRotation(taxiSprite.getRotation() - 90);
         
         KittImage = new Texture(Gdx.files.internal("Cars/Kitt.png"));
+        KittSprite = new Sprite(KittImage);
+        KittSprite.setRotation(KittSprite.getRotation() - 90);
         
         
         
@@ -58,7 +61,7 @@ public class GameScreen implements Screen {
         bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
                         // the bottom screen edge
         bucket.width = 64;
-        bucket.height = 64;
+        bucket.height = 128;
 
         // create the raindrops array and spawn the first raindrop
         raindrops = new Array<Rectangle>();
@@ -71,10 +74,11 @@ public class GameScreen implements Screen {
         raindrop.x = MathUtils.random(0, 800 - 64);
         raindrop.y = 480;
         raindrop.width = 64;
-        raindrop.height = 64;
+        raindrop.height = 128;
         raindrops.add(raindrop);
         lastDropTime = TimeUtils.nanoTime();
     }
+   
 
     @Override
     public void render(float delta) {
@@ -95,8 +99,8 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
-        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
-        game.batch.draw(KittImage, bucket.x, bucket.y);
+        game.font.draw(game.batch, "FPS: " + fps, 0, 480);
+        game.batch.draw(KittSprite, bucket.x, bucket.y);
         for (Rectangle raindrop : raindrops) {
             game.batch.draw(taxiSprite, raindrop.x, raindrop.y);
         }
@@ -134,7 +138,6 @@ public class GameScreen implements Screen {
             if (raindrop.y + 64 < 0)
                 iter.remove();
             if (raindrop.overlaps(bucket)) {
-                dropsGathered++;
                 //dropSound.play();
                 iter.remove();
             }
