@@ -5,11 +5,10 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -20,6 +19,7 @@ public class GameScreen implements Screen {
     final GBS game;
 
     Texture taxiImage;
+    private Sprite taxiSprite;
     Texture KittImage;
     //Sound dropSound;
     //Music rainMusic;
@@ -33,8 +33,15 @@ public class GameScreen implements Screen {
         this.game = gam;
 
         // load the images for the droplet and the bucket, 64x64 pixels each
-        taxiImage = new Texture(Gdx.files.internal("Cars/Taxi.png"));
+        taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
+        taxiSprite = new Sprite(taxiImage);
+        //taxiSprite.setPosition(1, 1);
+        taxiSprite.setRotation(45);
+        
         KittImage = new Texture(Gdx.files.internal("Cars/Kitt.png"));
+        
+        
+        
 
         // load the drop sound effect and the rain background "music"
         //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
@@ -91,7 +98,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
         game.batch.draw(KittImage, bucket.x, bucket.y);
         for (Rectangle raindrop : raindrops) {
-            game.batch.draw(taxiImage, raindrop.x, raindrop.y);
+            game.batch.draw(taxiSprite, raindrop.x, raindrop.y);
         }
         game.batch.end();
 
