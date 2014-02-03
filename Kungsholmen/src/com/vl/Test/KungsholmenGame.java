@@ -1,4 +1,4 @@
-package com.vl.Kungsholmen;
+package com.vl.Test;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -15,6 +15,9 @@ public class KungsholmenGame implements ApplicationListener {
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
+	
+	//private Music mainMenuMusic;
+
 	
 	@Override
 	public void create() {		
