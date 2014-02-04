@@ -28,7 +28,7 @@ public class MainMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
+        game.font.draw(game.batch, "Welcome to GBS Kungsholmen ", 100, 150);
         game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         game.batch.end();
 
