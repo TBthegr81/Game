@@ -19,8 +19,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class GameScreen implements Screen {
 	final Drop game;
 
-	Texture playerCar;
 	Texture enemyCar;
+	Texture playerCar;
 	Sound dropSound;
 	Music rainMusic;
 	OrthographicCamera camera;
@@ -33,8 +33,8 @@ public class GameScreen implements Screen {
 		this.game = gam;
 
 		// load the images for the cars, 64x64 pixels each
-		playerCar = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
-		enemyCar = new Texture(Gdx.files.internal("Cars/Kitt.png"));
+		enemyCar = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
+		playerCar = new Texture(Gdx.files.internal("Cars/Kitt.png"));
 
 		// load the drop sound effect and the rain background "music"
 		// dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
@@ -89,9 +89,9 @@ public class GameScreen implements Screen {
 		// all drops
 		game.batch.begin();
 		game.font.draw(game.batch, "Cars Destroyed: " + hits, 0, 480);
-		game.batch.draw(enemyCar, player.x, player.y);
+		game.batch.draw(playerCar, player.x, player.y);
 		for (Rectangle raindrop : enemies) {
-			game.batch.draw(playerCar, raindrop.x, raindrop.y);
+			game.batch.draw(enemyCar, raindrop.x, raindrop.y);
 		}
 		
 		game.batch.end();
@@ -160,8 +160,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		playerCar.dispose();
 		enemyCar.dispose();
+		playerCar.dispose();
 		// dropSound.dispose();
 		// rainMusic.dispose();
 	}
