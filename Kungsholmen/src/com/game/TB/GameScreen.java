@@ -26,9 +26,8 @@ public class GameScreen implements Screen {
     //Sound dropSound;
     //Music rainMusic;
     OrthographicCamera camera;
-    Rectangle bucket;
-    Array<Rectangle> raindrops;
-    Array<Rectangle> raindrops2;
+    Rectangle playerCar;
+    Array<Rectangle> taxis;
     long lastDropTime;
     int fps;
     int lastFPS;
@@ -115,15 +114,15 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
 
         // create a Rectangle to logically represent the bucket
-        bucket = new Rectangle();
-        bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
-        bucket.y = 50; // bottom left corner of the bucket is 20 pixels above
+        playerCar = new Rectangle();
+        playerCar.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+        playerCar.y = 50; // bottom left corner of the bucket is 20 pixels above
                         // the bottom screen edge
-        bucket.width = 64;
-        bucket.height = 128;
+        playerCar.width = 64;
+        playerCar.height = 128;
 
         // create the raindrops array and spawn the first raindrop
-        raindrops = new Array<Rectangle>();
+        taxis = new Array<Rectangle>();
         spawnRaindrop(true);
         
         fpsLogger = new FPSLogger();
@@ -131,19 +130,14 @@ public class GameScreen implements Screen {
     }
 
     private void spawnRaindrop(boolean thing) {
-        Rectangle raindrop = new Rectangle();
+        Rectangle taxi = new Rectangle();
         
-        raindrop.width = 64;
-        raindrop.height = 128;
+        taxi.width = 64;
+        taxi.height = 128;
         if(thing){
-        	raindrop.y = 480;
-        	raindrop.x = MathUtils.random(0, 800 - 64);
-        	raindrops.add(raindrop);
-        }
-        else{
-        	raindrop.y = 0;
-        	raindrop.x = MathUtils.random(400, 800 - 64);
-        	raindrops2.add(raindrop);
+        	taxi.y = 480;
+        	taxi.x = MathUtils.random(0, 800 - 64);
+        	taxis.add(taxi);
         }
         
         lastDropTime = TimeUtils.nanoTime();
@@ -176,11 +170,11 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.font.draw(game.batch, "FPS: " + lastFPS, 0, 480);
         //game.batch.draw(playerSprite, bucket.x, bucket.y);
-        game.batch.draw(playerSprite, bucket.x, bucket.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+        game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, bucket.x, bucket.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), 1, 1, 270);
-        for (Rectangle raindrop : raindrops) {
+        for (Rectangle taxi : taxis) {
             //game.batch.draw(taxiSprite, raindrop.x, raindrop.y);
-        	game.batch.draw(taxiSprite, raindrop.x, raindrop.y, taxiSprite.getOriginX(), taxiSprite.getOriginY(), taxiSprite.getWidth(), taxiSprite.getHeight(), taxiSprite.getScaleX(), taxiSprite.getScaleY(), 90);
+        	game.batch.draw(taxiSprite, taxi.x, taxi.y, taxiSprite.getOriginX(), taxiSprite.getOriginY(), taxiSprite.getWidth(), taxiSprite.getHeight(), taxiSprite.getScaleX(), taxiSprite.getScaleY(), 90);
         }
         game.batch.end();
 
@@ -189,7 +183,7 @@ public class GameScreen implements Screen {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            bucket.x = touchPos.x - 64 / 2;
+            playerCar.x = touchPos.x - 64 / 2;
         }
         if (Gdx.input.isKeyPressed(Keys.LEFT))
             turn(false);
@@ -209,20 +203,20 @@ public class GameScreen implements Screen {
         }
         if (Gdx.input.isKeyPressed(Keys.DOWN))
         {
-        	bucket.y -= 200 * Gdx.graphics.getDeltaTime();
+        	playerCar.y -= 200 * Gdx.graphics.getDeltaTime();
         }
-        bucket.x += VeloX * dt;
-    	bucket.y += VeloY * dt;
+        playerCar.x += VeloX * dt;
+        playerCar.y += VeloY * dt;
 
         // make sure the bucket stays within the screen bounds
-    	if (bucket.x < 0)
-            bucket.x = 0;
-        if (bucket.x > 800 - 128)
-            bucket.x = 800 - 128;
-        if (bucket.y < 0)
-            bucket.y = 0;
-        if (bucket.y > 480 - 128)
-            bucket.y = 480 - 128;
+    	if (playerCar.x < 0)
+    		playerCar.x = 0;
+        if (playerCar.x > 800 - 128)
+        	playerCar.x = 800 - 128;
+        if (playerCar.y < 0)
+        	playerCar.y = 0;
+        if (playerCar.y > 480 - 128)
+        	playerCar.y = 480 - 128;
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
@@ -240,13 +234,13 @@ public class GameScreen implements Screen {
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we increase the 
         // value our drops counter and add a sound effect.
-        Iterator<Rectangle> iter = raindrops.iterator();
+        Iterator<Rectangle> iter = taxis.iterator();
         while (iter.hasNext()) {
-            Rectangle raindrop = iter.next();
-            raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
-            if (raindrop.y + 64 < 0)
+            Rectangle taxi = iter.next();
+            taxi.y -= 200 * Gdx.graphics.getDeltaTime();
+            if (taxi.y + 64 < 0)
                 iter.remove();
-            if (raindrop.overlaps(bucket)) {	
+            if (taxi.overlaps(playerCar)) {	
                 //dropSound.play();
                 iter.remove();
             }
