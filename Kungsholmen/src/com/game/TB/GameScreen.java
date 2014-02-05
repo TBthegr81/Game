@@ -48,6 +48,14 @@ public class GameScreen implements Screen {
     long currentTime;
     long dt;
     
+	double circleX;
+	double circleY;
+	double radius = 100;
+	int speed = 6;
+	double speedScale = (0.001*2*Math.PI)/speed;
+	
+	Rectangle thing;
+    
     private void calcDT()
     {
     	currentTime = TimeUtils.millis();
@@ -67,8 +75,8 @@ public class GameScreen implements Screen {
     private void turn(boolean way)
     {
     	int tempTurn = 0;
-    	if(way) playerTurn -= 10;
-    	else playerTurn += 10;
+    	if(way) playerTurn -= 1;
+    	else playerTurn += 1;
     	
     	if(playerTurn < 0 && way)
     	{
@@ -120,6 +128,13 @@ public class GameScreen implements Screen {
                         // the bottom screen edge
         playerCar.width = 64;
         playerCar.height = 128;
+        
+        thing = new Rectangle();
+        thing.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+        thing.y = 50; // bottom left corner of the bucket is 20 pixels above
+                        // the bottom screen edge
+        thing.width = 64;
+        thing.height = 128;
 
         // create the raindrops array and spawn the first raindrop
         taxis = new Array<Rectangle>();
@@ -147,9 +162,14 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
     	calcDT();
-        calcDirectionVector();
+
     	fps++;
     	fpsLogger.log();
+    	
+    	
+    	//thing.x = (float) (circleX + Math.sin(angle)*radius);
+    	//thing.y = (float) (circleY + Math.cos(angle)*radius);
+    	  
         // clear the screen with a dark blue color. The
         // arguments to glClearColor are the red, green
         // blue and alpha component in the range [0,1]
@@ -171,6 +191,8 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "FPS: " + lastFPS, 0, 480);
         //game.batch.draw(playerSprite, bucket.x, bucket.y);
         game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+        //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+        
         //game.batch.draw(playerSprite, bucket.x, bucket.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), 1, 1, 270);
         for (Rectangle taxi : taxis) {
             //game.batch.draw(taxiSprite, raindrop.x, raindrop.y);
@@ -185,26 +207,43 @@ public class GameScreen implements Screen {
             camera.unproject(touchPos);
             playerCar.x = touchPos.x - 64 / 2;
         }
+        //double angle = (TimeUtils.millis()*speedScale);
+        calcDirectionVector();
         if (Gdx.input.isKeyPressed(Keys.LEFT))
-            turn(false);
+        {
+    		turn(false);
+    		//playerCar.x = (float) (circleX + Math.sin(angle)*radius);
+        	//playerCar.y = (float) (circleY + Math.cos(angle)*radius);
+        }
+        	
         if (Gdx.input.isKeyPressed(Keys.RIGHT))
-            turn(true);
+        {
+        	turn(true);
+        	/*VeloX += accforward * Math.sin(angle)*radius * dt;
+        	VeloY += accforward * Math.cos(angle)*radius * dt;
+        	VeloX *= .99;
+        	VeloY *= .99;
+        	VeloY += accforward * dirVecty * dt;*/
+        }
         if (Gdx.input.isKeyPressed(Keys.UP))
         {
         		//bucket.y -= 200 * Gdx.graphics.getDeltaTime();
-            	VeloX += accforward * dirVectx * dt;
-            	VeloY += accforward * dirVecty * dt;
-            	System.out.println("VeloX: " + VeloX + " VeloY: " + VeloY);
-            	// Simulate friction
-            	VeloX *= .99;
-            	VeloY *= .99;
+            	
+            	VeloX -= accforward * dirVectx * dt;
+            	VeloY -= accforward * dirVecty * dt;
             	//pos.x += vel.x * dt
             	//pos.y += vel.y * dt
         }
         if (Gdx.input.isKeyPressed(Keys.DOWN))
         {
-        	playerCar.y -= 200 * Gdx.graphics.getDeltaTime();
+        	VeloX += accforward * dirVectx * dt;
+        	VeloY += accforward * dirVecty * dt;
         }
+        System.out.println("VeloX: " + VeloX + " VeloY: " + VeloY);
+        // Simulate friction
+    		VeloX *= .99;
+        	VeloY *= .99;
+    	
         playerCar.x += VeloX * dt;
         playerCar.y += VeloY * dt;
 
