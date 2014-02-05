@@ -18,7 +18,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
     final GBS game;
-
+    int gameWidth = 1920;
+    int gameHeight = 1080;
+    
     Texture taxiImage;
     Sprite taxiSprite;
     Sprite playerSprite;
@@ -119,18 +121,18 @@ public class GameScreen implements Screen {
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, gameWidth, gameHeight);
 
         // create a Rectangle to logically represent the bucket
         playerCar = new Rectangle();
-        playerCar.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+        playerCar.x = gameWidth / 2 - 64 / 2; // center the bucket horizontally
         playerCar.y = 50; // bottom left corner of the bucket is 20 pixels above
                         // the bottom screen edge
         playerCar.width = 64;
         playerCar.height = 128;
         
         thing = new Rectangle();
-        thing.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+        thing.x = gameWidth / 2 - 64 / 2; // center the bucket horizontally
         thing.y = 50; // bottom left corner of the bucket is 20 pixels above
                         // the bottom screen edge
         thing.width = 64;
@@ -150,8 +152,8 @@ public class GameScreen implements Screen {
         taxi.width = 64;
         taxi.height = 128;
         if(thing){
-        	taxi.y = 480;
-        	taxi.x = MathUtils.random(0, 800 - 64);
+        	taxi.y = gameHeight;
+        	taxi.x = MathUtils.random(0, gameWidth - 64);
         	taxis.add(taxi);
         }
         
@@ -188,7 +190,7 @@ public class GameScreen implements Screen {
         // all drops
         
         game.batch.begin();
-        game.font.draw(game.batch, "FPS: " + lastFPS, 0, 480);
+        game.font.draw(game.batch, "FPS: " + lastFPS, 0, gameHeight);
         //game.batch.draw(playerSprite, bucket.x, bucket.y);
         game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
@@ -262,8 +264,8 @@ public class GameScreen implements Screen {
               	VeloX -= accforward * dirVectx * dt;
               	VeloY -= accforward * dirVecty * dt;
              }*/
-	        	VeloX *= .99;
-	         	VeloY *= .99;
+	        	VeloX *= .95;
+	         	VeloY *= .95;
             	VeloX -= accforward * dirVectx * dt;
             	VeloY -= accforward * dirVecty * dt;
             	//pos.x += vel.x * dt
@@ -284,12 +286,12 @@ public class GameScreen implements Screen {
         // make sure the bucket stays within the screen bounds
     	if (playerCar.x < 0)
     		playerCar.x = 0;
-        if (playerCar.x > 800 - 128)
-        	playerCar.x = 800 - 128;
+        if (playerCar.x > gameWidth - 128)
+        	playerCar.x = gameWidth - 128;
         if (playerCar.y < 0)
         	playerCar.y = 0;
-        if (playerCar.y > 480 - 128)
-        	playerCar.y = 480 - 128;
+        if (playerCar.y > gameHeight - 128)
+        	playerCar.y = gameHeight - 128;
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
