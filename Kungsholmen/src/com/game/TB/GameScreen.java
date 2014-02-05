@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -21,6 +22,7 @@ public class GameScreen implements Screen {
     int gameWidth = 1920;
     int gameHeight = 1080;
     
+    Texture bg;
     Texture taxiImage;
     Sprite taxiSprite;
     Sprite playerSprite;
@@ -77,8 +79,8 @@ public class GameScreen implements Screen {
     private void turn(boolean way)
     {
     	int tempTurn = 0;
-    	if(way) playerTurn -= 1;
-    	else playerTurn += 1;
+    	if(way) playerTurn -= 2;
+    	else playerTurn += 2;
     	
     	if(playerTurn < 0 && way)
     	{
@@ -108,9 +110,13 @@ public class GameScreen implements Screen {
         taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
         taxiSprite = new Sprite(taxiImage);
         //taxiSprite.setPosition(1, 1);
-        taxiSprite.setRotation(taxiSprite.getRotation() - 90);
+        //taxiSprite.setRotation(taxiSprite.getRotation() - 90);
         
-        playerImage = new Texture(Gdx.files.internal("Cars/Delorean-BTTF.png"));
+        bg = new Texture(Gdx.files.internal("bg.png"));
+        //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
+        //setTextureWrap(TextureWrap.GL_REPEAT)
+        
+        playerImage = new Texture(Gdx.files.internal("Cars/Caddie_Copcar.png"));
         playerSprite = new Sprite(playerImage);
         //playerSprite.setRotation(playerSprite.getRotation() - 90);
 
@@ -168,7 +174,10 @@ public class GameScreen implements Screen {
     	fps++;
     	fpsLogger.log();
     	
-    	
+    	float lerp = 0.1f;
+    	Vector3 position = camera.position;
+    	position.x += (playerCar.x - position.x) * lerp;
+    	position.y += (playerCar.y - position.y) * lerp;
     	//thing.x = (float) (circleX + Math.sin(angle)*radius);
     	//thing.y = (float) (circleY + Math.cos(angle)*radius);
     	  
@@ -190,7 +199,9 @@ public class GameScreen implements Screen {
         // all drops
         
         game.batch.begin();
-        game.font.draw(game.batch, "FPS: " + lastFPS, 0, gameHeight);
+        game.batch.draw(bg,0,0);
+        game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
+        game.font.draw(game.batch, "Pos: x" + playerCar.x + " y" +playerCar.y, playerCar.x, playerCar.y-20);
         //game.batch.draw(playerSprite, bucket.x, bucket.y);
         game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
@@ -218,10 +229,15 @@ public class GameScreen implements Screen {
         	//playerCar.y = (float) (circleY + Math.cos(angle)*radius);
         	if (Gdx.input.isKeyPressed(Keys.UP))
             {
-        		VeloX *= .9;
-             	VeloY *= .9;
+        		VeloX *= .99;
+             	VeloY *= .99;
         		VeloX -= accforward * dirVectx * dt;
              	VeloY -= accforward * dirVecty * dt;
+            }
+        	else if (Gdx.input.isKeyPressed(Keys.DOWN))
+            {
+            	VeloX += accforward * dirVectx * dt;
+            	VeloY += accforward * dirVecty * dt;
             }
         }
         	
@@ -235,10 +251,16 @@ public class GameScreen implements Screen {
         	VeloY += accforward * dirVecty * dt;*/
         	if (Gdx.input.isKeyPressed(Keys.UP))
             {
-        		VeloX *= .9;
-             	VeloY *= .9;
+        		VeloX *= .99;
+             	VeloY *= .99;
         		VeloX -= accforward * dirVectx * dt;
              	VeloY -= accforward * dirVecty * dt;
+            }
+        	else if (Gdx.input.isKeyPressed(Keys.DOWN))
+            {
+            	VeloX += accforward * dirVectx * dt;
+            	VeloY += accforward * dirVecty * dt;
+        		
             }
         }
         else if (Gdx.input.isKeyPressed(Keys.UP))
@@ -264,8 +286,8 @@ public class GameScreen implements Screen {
               	VeloX -= accforward * dirVectx * dt;
               	VeloY -= accforward * dirVecty * dt;
              }*/
-	        	VeloX *= .95;
-	         	VeloY *= .95;
+	        	//VeloX *= .99;
+	         	//VeloY *= .99;
             	VeloX -= accforward * dirVectx * dt;
             	VeloY -= accforward * dirVecty * dt;
             	//pos.x += vel.x * dt
@@ -275,23 +297,27 @@ public class GameScreen implements Screen {
         {
         	VeloX += accforward * dirVectx * dt;
         	VeloY += accforward * dirVecty * dt;
+
         }
         System.out.println("VeloX: " + VeloX + " VeloY: " + VeloY);
         // Simulate friction
     		VeloX *= .99;
         	VeloY *= .99;
+        	System.out.println("VeloX * dt" + VeloX * dt);
+        	System.out.println("VeloY * dt" + VeloY * dt);
         playerCar.x += VeloX * dt;
         playerCar.y += VeloY * dt;
-
+        
+        
         // make sure the bucket stays within the screen bounds
-    	if (playerCar.x < 0)
+    	/*if (playerCar.x < 0)
     		playerCar.x = 0;
         if (playerCar.x > gameWidth - 128)
         	playerCar.x = gameWidth - 128;
         if (playerCar.y < 0)
         	playerCar.y = 0;
         if (playerCar.y > gameHeight - 128)
-        	playerCar.y = gameHeight - 128;
+        	playerCar.y = gameHeight - 128;*/
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
