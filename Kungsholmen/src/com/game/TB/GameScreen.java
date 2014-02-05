@@ -214,9 +214,16 @@ public class GameScreen implements Screen {
     		turn(false);
     		//playerCar.x = (float) (circleX + Math.sin(angle)*radius);
         	//playerCar.y = (float) (circleY + Math.cos(angle)*radius);
+        	if (Gdx.input.isKeyPressed(Keys.UP))
+            {
+        		VeloX *= .9;
+             	VeloY *= .9;
+        		VeloX -= accforward * dirVectx * dt;
+             	VeloY -= accforward * dirVecty * dt;
+            }
         }
         	
-        if (Gdx.input.isKeyPressed(Keys.RIGHT))
+        else if (Gdx.input.isKeyPressed(Keys.RIGHT))
         {
         	turn(true);
         	/*VeloX += accforward * Math.sin(angle)*radius * dt;
@@ -224,17 +231,45 @@ public class GameScreen implements Screen {
         	VeloX *= .99;
         	VeloY *= .99;
         	VeloY += accforward * dirVecty * dt;*/
+        	if (Gdx.input.isKeyPressed(Keys.UP))
+            {
+        		VeloX *= .9;
+             	VeloY *= .9;
+        		VeloX -= accforward * dirVectx * dt;
+             	VeloY -= accforward * dirVecty * dt;
+            }
         }
-        if (Gdx.input.isKeyPressed(Keys.UP))
+        else if (Gdx.input.isKeyPressed(Keys.UP))
         {
+        	 /*if (Gdx.input.isKeyPressed(Keys.LEFT))
+             {
+             	//VeloX = 0;
+             	//VeloY = 0;
+        		VeloX *= .99;
+             	VeloY *= .99;
+             	turn(false);
+             	VeloX -= accforward * dirVectx * dt;
+             	VeloY -= accforward * dirVecty * dt;
+             }
         		//bucket.y -= 200 * Gdx.graphics.getDeltaTime();
-            	
+        	 if (Gdx.input.isKeyPressed(Keys.RIGHT))
+             {
+        		//VeloX = 0;
+        		//VeloY = 0;
+        		VeloX *= .99;
+             	VeloY *= .99;
+              	turn(true);
+              	VeloX -= accforward * dirVectx * dt;
+              	VeloY -= accforward * dirVecty * dt;
+             }*/
+	        	VeloX *= .99;
+	         	VeloY *= .99;
             	VeloX -= accforward * dirVectx * dt;
             	VeloY -= accforward * dirVecty * dt;
             	//pos.x += vel.x * dt
             	//pos.y += vel.y * dt
         }
-        if (Gdx.input.isKeyPressed(Keys.DOWN))
+        else if (Gdx.input.isKeyPressed(Keys.DOWN))
         {
         	VeloX += accforward * dirVectx * dt;
         	VeloY += accforward * dirVecty * dt;
@@ -243,7 +278,6 @@ public class GameScreen implements Screen {
         // Simulate friction
     		VeloX *= .99;
         	VeloY *= .99;
-    	
         playerCar.x += VeloX * dt;
         playerCar.y += VeloY * dt;
 
