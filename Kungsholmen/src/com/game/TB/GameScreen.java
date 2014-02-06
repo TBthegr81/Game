@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -59,6 +61,9 @@ public class GameScreen implements Screen {
 	double speedScale = (0.001*2*Math.PI)/speed;
 	
 	Rectangle thing;
+	
+	ParticleEffectPool bombEffectPool;
+	Array<PooledEffect> effects = new Array();
     
     private void calcDT()
     {
@@ -116,7 +121,7 @@ public class GameScreen implements Screen {
         //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         //setTextureWrap(TextureWrap.GL_REPEAT)
         
-        playerImage = new Texture(Gdx.files.internal("Cars/Caddie_Copcar.png"));
+        playerImage = new Texture(Gdx.files.internal("Cars/Snowmobile.png"));
         playerSprite = new Sprite(playerImage);
         //playerSprite.setRotation(playerSprite.getRotation() - 90);
 
@@ -149,7 +154,10 @@ public class GameScreen implements Screen {
         spawnRaindrop(true);
         
         fpsLogger = new FPSLogger();
-
+        
+        ParticleEffect bombEffect = new ParticleEffect();
+        bombEffect.load(Gdx.files.internal("Particles/Snowsprayv2"),Gdx.files.internal("Particles/"));
+        bombEffectPool = new ParticleEffectPool(bombEffect, 1, 2);
     }
 
     private void spawnRaindrop(boolean thing) {
@@ -173,6 +181,9 @@ public class GameScreen implements Screen {
 
     	fps++;
     	fpsLogger.log();
+    	PooledEffect effect = bombEffectPool.obtain();
+    	effect.setPosition(playerCar.x, playerCar.y);
+    	effects.add(effect);
     	
     	float lerp = 0.1f;
     	Vector3 position = camera.position;
@@ -200,6 +211,14 @@ public class GameScreen implements Screen {
         
         game.batch.begin();
         game.batch.draw(bg,0,0);
+        for (int i = effects.size - 1; i >= 0; i--) {
+            effect = effects.get(i);
+            effect.draw(game.batch, delta);
+            if (effect.isComplete()) {
+                effect.free();
+                effects.removeIndex(i);
+            }
+        }
         game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
         game.font.draw(game.batch, "Pos: x" + playerCar.x + " y" +playerCar.y, playerCar.x, playerCar.y-20);
         //game.batch.draw(playerSprite, bucket.x, bucket.y);
