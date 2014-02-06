@@ -61,9 +61,12 @@ public class GameScreen implements Screen {
 	double speedScale = (0.001*2*Math.PI)/speed;
 	
 	Rectangle thing;
-	
+	int car;
+	int turnability;
 	ParticleEffectPool bombEffectPool;
 	Array<PooledEffect> effects = new Array();
+	
+	Array<Car> Cars = new Array();
     
     private void calcDT()
     {
@@ -84,8 +87,8 @@ public class GameScreen implements Screen {
     private void turn(boolean way)
     {
     	int tempTurn = 0;
-    	if(way) playerTurn -= 2;
-    	else playerTurn += 2;
+    	if(way) playerTurn -= turnability;
+    	else playerTurn += turnability;
     	
     	if(playerTurn < 0 && way)
     	{
@@ -110,10 +113,22 @@ public class GameScreen implements Screen {
     
     public GameScreen(final GBS gam) {
         this.game = gam;
-
+        car = 5;
+        
+        Cars.add(new Car("Caddie_taxi", 64, 128, 5, 2, 2));
+        Cars.add(new Car("Caddie_copcar", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Caddie", 64, 128, 5, 2, 2));
+        Cars.add(new Car("Caddie_Monster", 128, 128, 5, 6, 3));
+        Cars.add(new Car("Snowmobile", 64, 128, 2, 4, 2));
+        Cars.add(new Car("CityBus", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Radiant_9000", 32, 64, 2, 4, 2));
+        Cars.add(new Car("Delorean_BTTF", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Kitt", 64, 128, 5, 5, 2));
+        Cars.add(new Car("Truck", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Truck_IKEA", 64, 256, 10, 2, 1));
         // load the images for the droplet and the bucket, 64x64 pixels each
-        taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
-        taxiSprite = new Sprite(taxiImage);
+        //taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
+        //taxiSprite = new Sprite(taxiImage);
         //taxiSprite.setPosition(1, 1);
         //taxiSprite.setRotation(taxiSprite.getRotation() - 90);
         
@@ -121,10 +136,11 @@ public class GameScreen implements Screen {
         //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         //setTextureWrap(TextureWrap.GL_REPEAT)
         
-        playerImage = new Texture(Gdx.files.internal("Cars/Snowmobile.png"));
-        playerSprite = new Sprite(playerImage);
+        //playerImage = new Texture(Gdx.files.internal("Cars/Snowmobile.png"));
+        //playerSprite = new Sprite(playerImage);
         //playerSprite.setRotation(playerSprite.getRotation() - 90);
-
+        loadPlayerCar();
+        
         // load the drop sound effect and the rain background "music"
         //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         //rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
@@ -135,12 +151,10 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, gameWidth, gameHeight);
 
         // create a Rectangle to logically represent the bucket
-        playerCar = new Rectangle();
-        playerCar.x = gameWidth / 2 - 64 / 2; // center the bucket horizontally
-        playerCar.y = 50; // bottom left corner of the bucket is 20 pixels above
-                        // the bottom screen edge
-        playerCar.width = 64;
-        playerCar.height = 128;
+        //playerCar = new Rectangle();
+        
+        //playerCar.width = 64;
+        //playerCar.height = 256;
         
         thing = new Rectangle();
         thing.x = gameWidth / 2 - 64 / 2; // center the bucket horizontally
@@ -158,13 +172,14 @@ public class GameScreen implements Screen {
         ParticleEffect bombEffect = new ParticleEffect();
         bombEffect.load(Gdx.files.internal("Particles/Snowsprayv2"),Gdx.files.internal("Particles/"));
         bombEffectPool = new ParticleEffectPool(bombEffect, 1, 2);
+        
     }
 
     private void spawnRaindrop(boolean thing) {
-        Rectangle taxi = new Rectangle();
-        
-        taxi.width = 64;
-        taxi.height = 128;
+        //Rectangle taxi = new Rectangle();
+        Rectangle taxi = Cars.get(0).getRectangle();
+        //taxi.width = 64;
+        //taxi.height = 128;
         if(thing){
         	taxi.y = gameHeight;
         	taxi.x = MathUtils.random(0, gameWidth - 64);
@@ -172,6 +187,17 @@ public class GameScreen implements Screen {
         }
         
         lastDropTime = TimeUtils.nanoTime();
+    }
+    
+    private void loadPlayerCar()
+    {
+    	playerSprite = Cars.get(car).getSprite();
+        playerCar = Cars.get(car).getRectangle();
+        //playerCar.x = 0; // center the bucket horizontally
+        //playerCar.y = 0; // bottom left corner of the bucket is 20 pixels above
+        turnability = Cars.get(car).getTurnability();
+        dirVectx = 0;
+        dirVecty = 0;
     }
    
 
@@ -210,6 +236,7 @@ public class GameScreen implements Screen {
         // all drops
         
         game.batch.begin();
+        //game.batch.draw(texture, x, y);
         game.batch.draw(bg,0,0);
         for (int i = effects.size - 1; i >= 0; i--) {
             effect = effects.get(i);
@@ -221,13 +248,14 @@ public class GameScreen implements Screen {
         }
         game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
         game.font.draw(game.batch, "Pos: x" + playerCar.x + " y" +playerCar.y, playerCar.x, playerCar.y-20);
-        //game.batch.draw(playerSprite, bucket.x, bucket.y);
+        //game.batch.draw(playerSprite, playerCar.x, playerCar.y);
         game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
         
         //game.batch.draw(playerSprite, bucket.x, bucket.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), 1, 1, 270);
         for (Rectangle taxi : taxis) {
             //game.batch.draw(taxiSprite, raindrop.x, raindrop.y);
+        	Sprite taxiSprite = Cars.get(0).getSprite();
         	game.batch.draw(taxiSprite, taxi.x, taxi.y, taxiSprite.getOriginX(), taxiSprite.getOriginY(), taxiSprite.getWidth(), taxiSprite.getHeight(), taxiSprite.getScaleX(), taxiSprite.getScaleY(), 90);
         }
         game.batch.end();
@@ -337,7 +365,79 @@ public class GameScreen implements Screen {
         	playerCar.y = 0;
         if (playerCar.y > gameHeight - 128)
         	playerCar.y = gameHeight - 128;*/
-
+        if (Gdx.input.isKeyPressed(Keys.PAGE_UP))
+        {
+        	car++;
+        	if(car >= Cars.size)
+        	{
+        		car = 0;
+        	}
+        	loadPlayerCar();
+        }
+        if (Gdx.input.isKeyPressed(Keys.PAGE_DOWN))
+        {
+        	car--;
+        	if(car < 0)
+        	{
+        		car = (Cars.size-1);
+        	}
+        	loadPlayerCar();
+        }
+        if(Gdx.input.isKeyPressed(Keys.F1))
+        {
+        	car = 0;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F2))
+        {
+        	car = 1;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F3))
+        {
+        	car = 2;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F4))
+        {
+        	car = 3;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F5))
+        {
+        	car = 4;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F6))
+        {
+        	car = 5;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F7))
+        {
+        	car = 6;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F8))
+        {
+        	car = 7;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F9))
+        {
+        	car = 8;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F10))
+        {
+        	car = 9;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F11))
+        {
+        	car = 10;
+        	loadPlayerCar();
+        }
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
         {

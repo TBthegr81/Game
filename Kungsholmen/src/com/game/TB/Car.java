@@ -10,7 +10,7 @@ public class Car {
 	private Texture carTexture;
 	private Sprite carSprite;
 	
-	Rectangle Car;
+	Rectangle RecCar;
 	
 	private int carTurn;
 	
@@ -26,7 +26,9 @@ public class Car {
     
 	private int hp;
 	private double weight;
-    
+	private int engine;
+	private int turnability;
+	
     public void calcDT()
     {
     	currentTime = TimeUtils.millis();
@@ -70,10 +72,17 @@ public class Car {
     	
     }
     
-    public Car(String carname)
+    public Car(String carname, int width, int height, int weight, int engine, int turnability)
     {
     	carTexture = new Texture(Gdx.files.internal("Cars/" + carname + ".png"));
     	carSprite = new Sprite(carTexture);
+    	//System.out.println("Width: " + width + " Height: " + height);
+    	RecCar = new Rectangle();
+    	RecCar.width = width;
+    	RecCar.height = height;
+    	this.engine = engine;
+    	this.weight = weight;
+    	this.turnability = turnability;
     }
     
    public void throttle()
@@ -88,8 +97,8 @@ public class Car {
    
    public void updatePosition()
    {
-	   Car.x += VeloX * dt;
-	   Car.y += VeloY * dt;
+	   RecCar.x += VeloX * dt;
+	   RecCar.y += VeloY * dt;
    }
    
    public Sprite getSprite()
@@ -101,5 +110,15 @@ public class Car {
    {
 	   hp--;
 	   System.out.println("Current HP: " + hp);
+   }
+   
+   public Rectangle getRectangle()
+   {
+	   return RecCar;
+   }
+   
+   public int getTurnability()
+   {
+	   return turnability;
    }
 }
