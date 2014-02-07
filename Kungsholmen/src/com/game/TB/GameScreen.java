@@ -286,6 +286,7 @@ public class GameScreen implements Screen {
             	VeloX += accforward * dirVectx * dt;
             	VeloY += accforward * dirVecty * dt;
             }
+        	
         }
         	
         else if (Gdx.input.isKeyPressed(Keys.RIGHT))
@@ -309,6 +310,7 @@ public class GameScreen implements Screen {
             	VeloY += accforward * dirVecty * dt;
         		
             }
+
         }
         else if (Gdx.input.isKeyPressed(Keys.UP))
         {
