@@ -45,8 +45,14 @@ public class GameScreen implements Screen {
     double dirVectx;
     double dirVecty;
     
+    double trainDirVectx;
+    double trainDirVecty;
+    
     double VeloX;
     double VeloY;
+    
+    double trainVeloX;
+    double trainVeloY;
     
     double accforward = 0.001;
     
@@ -60,13 +66,17 @@ public class GameScreen implements Screen {
 	int speed = 6;
 	double speedScale = (0.001*2*Math.PI)/speed;
 	
-	Rectangle thing;
+	Rectangle train;
+	int trainTurn;
 	int car;
 	int turnability;
 	ParticleEffectPool bombEffectPool;
 	Array<PooledEffect> effects = new Array();
 	
 	Array<Car> Cars = new Array();
+	
+	Array<PathNode> GreenLine = new Array();
+	int lastNode;
     
     private void calcDT()
     {
@@ -81,6 +91,13 @@ public class GameScreen implements Screen {
     {
     	 dirVectx = Math.cos(Math.toRadians(playerTurn));
          dirVecty = Math.sin(Math.toRadians(playerTurn));
+         //System.out.println("DirectVelocityX: " + dirVectx + " DirectVelocityY: " + dirVecty);
+    }
+    
+    private void calcTrainDirectionVector()
+    {
+    	trainDirVectx = Math.cos(Math.toRadians(trainTurn));
+    	trainDirVecty = Math.sin(Math.toRadians(trainTurn));
          //System.out.println("DirectVelocityX: " + dirVectx + " DirectVelocityY: " + dirVecty);
     }
     
@@ -126,6 +143,7 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Kitt", 64, 128, 5, 5, 2));
         Cars.add(new Car("Truck", 64, 256, 10, 2, 1));
         Cars.add(new Car("Truck_IKEA", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Train_engine", 64, 256, 10, 2, 1));
         // load the images for the droplet and the bucket, 64x64 pixels each
         //taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
         //taxiSprite = new Sprite(taxiImage);
@@ -155,13 +173,18 @@ public class GameScreen implements Screen {
         
         //playerCar.width = 64;
         //playerCar.height = 256;
+        PathNode node = new PathNode(0,0);
+        node.setNextNode(1);
+        GreenLine.add(node);
+        node = new PathNode(100,0);
+        node.setNextNode(0);
+        GreenLine.add(node);
         
-        thing = new Rectangle();
-        thing.x = gameWidth / 2 - 64 / 2; // center the bucket horizontally
-        thing.y = 50; // bottom left corner of the bucket is 20 pixels above
-                        // the bottom screen edge
-        thing.width = 64;
-        thing.height = 128;
+        train = new Rectangle();
+        train.x = GreenLine.get(0).getX(); // center the bucket horizontally
+        train.y = GreenLine.get(0).getY(); // bottom left corner of the bucket is 20 pixels above
+        train.width = 64;
+        train.height = 256;
 
         // create the raindrops array and spawn the first raindrop
         taxis = new Array<Rectangle>();
@@ -173,6 +196,7 @@ public class GameScreen implements Screen {
         bombEffect.load(Gdx.files.internal("Particles/Snowsprayv2"),Gdx.files.internal("Particles/"));
         bombEffectPool = new ParticleEffectPool(bombEffect, 1, 2);
         
+        lastNode = 0;
     }
 
     private void spawnRaindrop(boolean thing) {
@@ -211,6 +235,7 @@ public class GameScreen implements Screen {
     	effect.setPosition(playerCar.x, playerCar.y);
     	effects.add(effect);
     	
+    	//Move Camera to center of car
     	float lerp = 0.1f;
     	Vector3 position = camera.position;
     	position.x += (playerCar.x - position.x) * lerp;
@@ -258,6 +283,11 @@ public class GameScreen implements Screen {
         	Sprite taxiSprite = Cars.get(0).getSprite();
         	game.batch.draw(taxiSprite, taxi.x, taxi.y, taxiSprite.getOriginX(), taxiSprite.getOriginY(), taxiSprite.getWidth(), taxiSprite.getHeight(), taxiSprite.getScaleX(), taxiSprite.getScaleY(), 90);
         }
+        
+        //Train
+        Sprite trainSprite = Cars.get(11).getSprite();
+        game.batch.draw(trainSprite, train.x, train.y, trainSprite.getOriginX(), trainSprite.getOriginY(), trainSprite.getWidth(), trainSprite.getHeight(), trainSprite.getScaleX(), trainSprite.getScaleY(), 0);
+        
         game.batch.end();
 
         // process user input
@@ -357,7 +387,33 @@ public class GameScreen implements Screen {
         playerCar.x += VeloX * dt;
         playerCar.y += VeloY * dt;
         
-        
+        //calcTrainDirectionVector();
+        //move train
+        //train.x += trainVeloX * dt;
+        //train.y += trainVeloY * dt;
+        float nextNodeX = GreenLine.get(GreenLine.get(lastNode).getNextNode()).getX();
+        System.out.println("NextNodeX : " + nextNodeX);
+        float nextNodeY = GreenLine.get(GreenLine.get(lastNode).getNextNode()).getY();
+        if(train.x < nextNodeX)
+        {
+        	train.x += 1;
+        }
+        else if(train.x > nextNodeX)
+        {
+        	train.x -= 1;
+        }
+        if(train.x < nextNodeY)
+        {
+        	train.y += 1;
+        }
+        else if(train.x > nextNodeY)
+        {
+        	train.y -= 1;
+        }
+        if(train.x == nextNodeX && train.y == nextNodeY)
+        {
+        	lastNode = 1;
+        }
         // make sure the bucket stays within the screen bounds
     	/*if (playerCar.x < 0)
     		playerCar.x = 0;
