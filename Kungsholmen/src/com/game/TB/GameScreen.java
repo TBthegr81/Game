@@ -29,6 +29,16 @@ public class GameScreen implements Screen {
     Sprite taxiSprite;
     Sprite playerSprite;
     Texture playerImage;
+    Texture highbeam;
+    Sprite highbeam_sprite;
+    Texture checkpointPillar;
+    Texture checkpointFlag;
+    Sprite checkpointPillarSprite;
+    Sprite checkpointFlagSprite;
+    Rectangle checkpoint;
+    
+    Texture rotorblad;
+    Sprite rotorbladSprite;
     //Sound dropSound;
     //Music rainMusic;
     OrthographicCamera camera;
@@ -59,6 +69,9 @@ public class GameScreen implements Screen {
 	double radius = 100;
 	int speed = 6;
 	double speedScale = (0.001*2*Math.PI)/speed;
+	
+	int ifsnurr;
+	int snurr;
 	
 	
 	Array<Rectangle> trains = new Array<Rectangle>();
@@ -128,7 +141,7 @@ public class GameScreen implements Screen {
     
     public GameScreen(final GBS gam) {
         this.game = gam;
-        car = 5;
+        car = 14;
         
         Cars.add(new Car("Caddie_taxi", 64, 128, 5, 2, 2));
         Cars.add(new Car("Caddie_copcar", 64, 128, 5, 4, 2));
@@ -143,6 +156,16 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Truck_IKEA", 64, 256, 10, 2, 1));
         Cars.add(new Car("Train_engine", 64, 256, 10, 2, 1));
         Cars.add(new Car("Train_cart", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Panoz_Roadster", 64, 128, 4, 10, 2));
+        Cars.add(new Car("Volvo_copcar", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
+        Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
+        
+        highbeam = new Texture(Gdx.files.internal("highbeam.png"));
+        highbeam_sprite = new Sprite(highbeam);
+        
+        rotorblad = new Texture(Gdx.files.internal("Cars/rotorblad.png"));
+        rotorbladSprite = new Sprite(rotorblad);
         // load the images for the droplet and the bucket, 64x64 pixels each
         //taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
         //taxiSprite = new Sprite(taxiImage);
@@ -152,6 +175,13 @@ public class GameScreen implements Screen {
         bg = new Texture(Gdx.files.internal("bg.png"));
         //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         //setTextureWrap(TextureWrap.GL_REPEAT)
+        checkpoint = new Rectangle();
+        checkpoint.setHeight(128);
+        checkpoint.setWidth(64+256+64);
+        checkpointPillar = new Texture(Gdx.files.internal("Checkpoint_pillar.png"));
+        checkpointFlag = new Texture(Gdx.files.internal("Checkpoint_flag.png"));
+        checkpointPillarSprite = new Sprite(checkpointPillar);
+        checkpointFlagSprite = new Sprite(checkpointFlag);
         
         //playerImage = new Texture(Gdx.files.internal("Cars/Snowmobile.png"));
         //playerSprite = new Sprite(playerImage);
@@ -219,7 +249,7 @@ public class GameScreen implements Screen {
         bombEffect.load(Gdx.files.internal("Particles/Snowsprayv2"),Gdx.files.internal("Particles/"));
         bombEffectPool = new ParticleEffectPool(bombEffect, 1, 2);
         
-        
+        snurr = 1;
     }
 
     private void spawnRaindrop(boolean thing) {
@@ -246,6 +276,13 @@ public class GameScreen implements Screen {
         dirVectx = 0;
         dirVecty = 0;
     }
+    
+    private void drawCheckpoint(int x, int y, int degrees)
+    {
+    	game.batch.draw(checkpointPillarSprite, checkpoint.x, checkpoint.y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
+    	game.batch.draw(checkpointFlagSprite, checkpoint.x+64, checkpoint.y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
+    	game.batch.draw(checkpointPillarSprite, checkpoint.x+256+64, checkpoint.y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
+    }
    
 
     @Override
@@ -255,7 +292,8 @@ public class GameScreen implements Screen {
     	fps++;
     	fpsLogger.log();
     	PooledEffect effect = bombEffectPool.obtain();
-    	effect.setPosition(playerCar.x, playerCar.y);
+    	effect.setPosition(playerCar.x + playerCar.width, (playerCar.y + (playerCar.height / 2)));
+    	
     	effects.add(effect);
     	
     	//Move Camera to center of car
@@ -297,7 +335,7 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
         game.font.draw(game.batch, "Pos: x" + playerCar.x + " y" +playerCar.y, playerCar.x, playerCar.y-20);
         //game.batch.draw(playerSprite, playerCar.x, playerCar.y);
-        game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+       //game.batch.draw(highbeam_sprite, playerCar.x, playerCar.y, highbeam_sprite.getOriginX(), highbeam_sprite.getOriginY(), highbeam_sprite.getWidth(), highbeam_sprite.getHeight(), highbeam_sprite.getScaleX(), highbeam_sprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
         
         //game.batch.draw(playerSprite, bucket.x, bucket.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), 1, 1, 270);
@@ -317,6 +355,19 @@ public class GameScreen implements Screen {
         game.batch.draw(trainCartSprite, train2.x, train2.y, trainSprite.getOriginX(), trainSprite.getOriginY(), trainSprite.getWidth(), trainSprite.getHeight(), trainSprite.getScaleX(), trainSprite.getScaleY(), trainTurn);
         game.batch.draw(trainSprite, train3.x, train3.y, trainSprite.getOriginX(), trainSprite.getOriginY(), trainSprite.getWidth(), trainSprite.getHeight(), trainSprite.getScaleX(), trainSprite.getScaleY(), trainTurn);
         
+        drawCheckpoint(0,0,0);
+        game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+        if(ifsnurr == 1)
+        	{
+        		snurr = 45;
+        		ifsnurr = 0;
+        	}
+        else{
+        	snurr = 0;
+        	ifsnurr = 1;
+        }
+        //game.batch.draw(rotorbladSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), snurr);
+       
         game.batch.end();
 
         // process user input
@@ -548,6 +599,11 @@ public class GameScreen implements Screen {
         else if(Gdx.input.isKeyPressed(Keys.F11))
         {
         	car = 10;
+        	loadPlayerCar();
+        }
+        else if(Gdx.input.isKeyPressed(Keys.F12))
+        {
+        	car = 13;
         	loadPlayerCar();
         }
         // check if we need to create a new raindrop
