@@ -159,12 +159,12 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Panoz_Roadster", 64, 128, 4, 10, 2));
         Cars.add(new Car("Volvo_copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
-        Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
+        //Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
         
         highbeam = new Texture(Gdx.files.internal("highbeam.png"));
         highbeam_sprite = new Sprite(highbeam);
         
-        rotorblad = new Texture(Gdx.files.internal("Cars/rotorblad.png"));
+        rotorblad = new Texture(Gdx.files.internal("Flyers/rotorblad.png"));
         rotorbladSprite = new Sprite(rotorblad);
         // load the images for the droplet and the bucket, 64x64 pixels each
         //taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
@@ -279,9 +279,9 @@ public class GameScreen implements Screen {
     
     private void drawCheckpoint(int x, int y, int degrees)
     {
-    	game.batch.draw(checkpointPillarSprite, checkpoint.x, checkpoint.y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
-    	game.batch.draw(checkpointFlagSprite, checkpoint.x+64, checkpoint.y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
-    	game.batch.draw(checkpointPillarSprite, checkpoint.x+256+64, checkpoint.y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
+    	game.batch.draw(checkpointPillarSprite, x, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
+    	game.batch.draw(checkpointFlagSprite, x+64, y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
+    	game.batch.draw(checkpointPillarSprite, x+256+64, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
     }
    
 
@@ -334,6 +334,8 @@ public class GameScreen implements Screen {
         }
         game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
         game.font.draw(game.batch, "Pos: x" + playerCar.x + " y" +playerCar.y, playerCar.x, playerCar.y-20);
+        game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+        
         //game.batch.draw(playerSprite, playerCar.x, playerCar.y);
        //game.batch.draw(highbeam_sprite, playerCar.x, playerCar.y, highbeam_sprite.getOriginX(), highbeam_sprite.getOriginY(), highbeam_sprite.getWidth(), highbeam_sprite.getHeight(), highbeam_sprite.getScaleX(), highbeam_sprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
@@ -356,7 +358,8 @@ public class GameScreen implements Screen {
         game.batch.draw(trainSprite, train3.x, train3.y, trainSprite.getOriginX(), trainSprite.getOriginY(), trainSprite.getWidth(), trainSprite.getHeight(), trainSprite.getScaleX(), trainSprite.getScaleY(), trainTurn);
         
         drawCheckpoint(0,0,0);
-        game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
+        drawCheckpoint(500,500,225);
+        drawCheckpoint(1000,1000,90);
         if(ifsnurr == 1)
         	{
         		snurr = 45;
