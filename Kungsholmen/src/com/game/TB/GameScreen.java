@@ -35,15 +35,15 @@ public class GameScreen implements Screen {
     Texture checkpointFlag;
     Sprite checkpointPillarSprite;
     Sprite checkpointFlagSprite;
-    Rectangle checkpoint;
+    //Rectangle checkpoint;
     
     Texture rotorblad;
     Sprite rotorbladSprite;
     //Sound dropSound;
     //Music rainMusic;
     OrthographicCamera camera;
-    Rectangle playerCar;
-    Array<Rectangle> taxis;
+    //Rectangle playerCar;
+    //Array<Rectangle> taxis;
     long lastDropTime;
     int fps;
     int lastFPS;
@@ -139,6 +139,7 @@ public class GameScreen implements Screen {
     	
     }
     
+    
     public GameScreen(final GBS gam) {
         this.game = gam;
         car = 14;
@@ -170,14 +171,14 @@ public class GameScreen implements Screen {
         //taxiImage = new Texture(Gdx.files.internal("Cars/Caddie_taxi.png"));
         //taxiSprite = new Sprite(taxiImage);
         //taxiSprite.setPosition(1, 1);
-        //taxiSprite.setRotation(taxiSprite.getRotation() - 90);
+        //taxiSprite.setRotation(taxiSprite.getRotation() - 90);    
         
         bg = new Texture(Gdx.files.internal("bg.png"));
         //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         //setTextureWrap(TextureWrap.GL_REPEAT)
-        checkpoint = new Rectangle();
-        checkpoint.setHeight(128);
-        checkpoint.setWidth(64+256+64);
+        //checkpoint = new Rectangle();
+        //checkpoint.setHeight(128);
+        //checkpoint.setWidth(64+256+64);
         checkpointPillar = new Texture(Gdx.files.internal("Checkpoint_pillar.png"));
         checkpointFlag = new Texture(Gdx.files.internal("Checkpoint_flag.png"));
         checkpointPillarSprite = new Sprite(checkpointPillar);
