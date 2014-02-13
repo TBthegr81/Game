@@ -3,13 +3,14 @@ package com.game.TB;
 public class PathNode {
 	private float x;
 	private float y;
-	
+	private int line;
 	private int nextNode;
 	
-	public PathNode(int x, int y)
+	public PathNode(int x, int y, int line)
 	{
 		this.x = x;
 		this.y = y;
+		this.line = line;
 	}
 	
 	public void setX(int x)

@@ -29,4 +29,9 @@ public class Checkpoint {
         checkpointMiddle.setPosition(checkpointPillarSprite.getX()+checkpointPillarSprite.getWidth(), checkpointPillarSprite.getX());
     }
     
+    public Sprite getSprite()
+    {
+    	return checkpointPillarSprite;
+    }
+    
 }

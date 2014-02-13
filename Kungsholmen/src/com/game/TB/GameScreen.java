@@ -31,10 +31,7 @@ public class GameScreen implements Screen {
     Texture playerImage;
     Texture highbeam;
     Sprite highbeam_sprite;
-    Texture checkpointPillar;
-    Texture checkpointFlag;
-    Sprite checkpointPillarSprite;
-    Sprite checkpointFlagSprite;
+    
     //Rectangle checkpoint;
     
     Texture rotorblad;
@@ -83,9 +80,9 @@ public class GameScreen implements Screen {
 	int turnability;
 	ParticleEffectPool bombEffectPool;
 	Array<PooledEffect> effects = new Array();
-	
+	Array<Checkpoint> checkpoints = new Array();
 	Array<Car> Cars = new Array();
-	
+	Array<Rectangle> taxis;
 	Array<PathNode> GreenLine = new Array();
 	
     
@@ -176,13 +173,8 @@ public class GameScreen implements Screen {
         bg = new Texture(Gdx.files.internal("bg.png"));
         //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         //setTextureWrap(TextureWrap.GL_REPEAT)
-        //checkpoint = new Rectangle();
-        //checkpoint.setHeight(128);
-        //checkpoint.setWidth(64+256+64);
-        checkpointPillar = new Texture(Gdx.files.internal("Checkpoint_pillar.png"));
-        checkpointFlag = new Texture(Gdx.files.internal("Checkpoint_flag.png"));
-        checkpointPillarSprite = new Sprite(checkpointPillar);
-        checkpointFlagSprite = new Sprite(checkpointFlag);
+        
+        
         
         //playerImage = new Texture(Gdx.files.internal("Cars/Snowmobile.png"));
         //playerSprite = new Sprite(playerImage);
@@ -203,16 +195,16 @@ public class GameScreen implements Screen {
         
         //playerCar.width = 64;
         //playerCar.height = 256;
-        PathNode node = new PathNode(-500,-500);
+        PathNode node = new PathNode(-500,-500, 1);
         node.setNextNode(1);
         GreenLine.add(node);
-        node = new PathNode(500,-500);
+        node = new PathNode(500,-500, 1);
         node.setNextNode(2);
         GreenLine.add(node);
-        node = new PathNode(500,500);
+        node = new PathNode(500,500, 1);
         node.setNextNode(3);
         GreenLine.add(node);
-        node = new PathNode(-500,500);
+        node = new PathNode(-500,500, 1);
         node.setNextNode(0);
         GreenLine.add(node);
         
@@ -255,7 +247,7 @@ public class GameScreen implements Screen {
 
     private void spawnRaindrop(boolean thing) {
         //Rectangle taxi = new Rectangle();
-        Rectangle taxi = Cars.get(0).getRectangle();
+        Rectangle taxi = Cars.get(0).getSprite().getBoundingRectangle();
         //taxi.width = 64;
         //taxi.height = 128;
         if(thing){
@@ -270,7 +262,7 @@ public class GameScreen implements Screen {
     private void loadPlayerCar()
     {
     	playerSprite = Cars.get(car).getSprite();
-        playerCar = Cars.get(car).getRectangle();
+        //playerCar = Cars.get(car).getSprite().getBoundingRectangle();
         //playerCar.x = 0; // center the bucket horizontally
         //playerCar.y = 0; // bottom left corner of the bucket is 20 pixels above
         turnability = Cars.get(car).getTurnability();
@@ -278,18 +270,21 @@ public class GameScreen implements Screen {
         dirVecty = 0;
     }
     
-    private void drawCheckpoint(int x, int y, int degrees)
+    /*private void drawCheckpoint(Checkpoint checkpoint)
     {
+    	int x = checkpoint.get
+    	int y
+    	int degrees
     	game.batch.draw(checkpointPillarSprite, x, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
     	game.batch.draw(checkpointFlagSprite, x+64, y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
     	game.batch.draw(checkpointPillarSprite, x+256+64, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
-    }
+    }*/
    
 
     @Override
     public void render(float delta) {
     	calcDT();
-
+    	Rectangle playerCar = Cars.get(car).getSprite().getBoundingRectangle();
     	fps++;
     	fpsLogger.log();
     	PooledEffect effect = bombEffectPool.obtain();
@@ -298,6 +293,7 @@ public class GameScreen implements Screen {
     	effects.add(effect);
     	
     	//Move Camera to center of car
+    	
     	float lerp = 0.1f;
     	Vector3 position = camera.position;
     	position.x += (playerCar.x - position.x) * lerp;
@@ -358,9 +354,9 @@ public class GameScreen implements Screen {
         game.batch.draw(trainCartSprite, train2.x, train2.y, trainSprite.getOriginX(), trainSprite.getOriginY(), trainSprite.getWidth(), trainSprite.getHeight(), trainSprite.getScaleX(), trainSprite.getScaleY(), trainTurn);
         game.batch.draw(trainSprite, train3.x, train3.y, trainSprite.getOriginX(), trainSprite.getOriginY(), trainSprite.getWidth(), trainSprite.getHeight(), trainSprite.getScaleX(), trainSprite.getScaleY(), trainTurn);
         
-        drawCheckpoint(0,0,0);
-        drawCheckpoint(500,500,225);
-        drawCheckpoint(1000,1000,90);
+        //drawCheckpoint(0,0,0);
+        //drawCheckpoint(500,500,225);
+        //drawCheckpoint(1000,1000,90);
         if(ifsnurr == 1)
         	{
         		snurr = 45;
