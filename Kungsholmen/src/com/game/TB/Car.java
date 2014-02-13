@@ -15,7 +15,6 @@ public class Car {
 	private int carTurn;
 	
 	private double accforward = 0.001;
-	
 	private int hp;
 	private double weight;
 	private int engine;
