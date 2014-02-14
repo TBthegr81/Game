@@ -1,11 +1,13 @@
 package com.game.clean;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Main {
+	private boolean devmode;
 	private Array<Car> GameCars;
 	private Array<NPC> NPCs;
 	private Array<Player> Players;
@@ -148,4 +150,68 @@ public class Main {
     	Musics.add(new Music());
     }
     */
+    
+    public void checkInput()
+    {
+    	if(Gdx.input.isKeyPressed(Keys.LEFT))
+    	{
+    		if(Gdx.input.isKeyPressed(Keys.SPACE))
+    		{
+    			//TODO Lock Wheels, no acceleration possible. Grip looses
+    		}
+    		else if(Gdx.input.isKeyPressed(Keys.UP))
+    		{
+    			//TODO Turn Left and accelerate
+    		}
+    		else if(Gdx.input.isKeyPressed(Keys.DOWN))
+    		{
+    			//TODO Turn Left and de-accelerate
+    		}
+    		else
+    		{
+    			//TODO Turn Left, no acceleration
+    		}
+    	}
+    	else if(Gdx.input.isKeyPressed(Keys.RIGHT))
+    	{
+    		if(Gdx.input.isKeyPressed(Keys.SPACE))
+    		{
+    			//TODO Lock Wheels, no acceleration possible. Grip looses
+    		}
+    		else if(Gdx.input.isKeyPressed(Keys.UP))
+    		{
+    			//TODO Turn Right and accelerate
+    		}
+    		else if(Gdx.input.isKeyPressed(Keys.DOWN))
+    		{
+    			//TODO Turn Right and de-accelerate
+    		}
+    		else
+    		{
+    			//TODO Turn Right, no acceleration
+    		}
+    	}
+    	else if (Gdx.input.isKeyPressed(Keys.UP))
+        {
+    		//TODO Accelerate in the direction you are facing
+        }
+    	else if(Gdx.input.isKeyPressed(Keys.DOWN))
+    	{
+    		//TODO De-accelerate
+    	}
+    	else if(Gdx.input.isKeyPressed(Keys.SPACE))
+    	{
+    		//TODO Lock Wheels, no acceleration possible. Grip looses
+    	}
+    	if(devmode)
+    	{
+	    	for(int i = 0; i < 12; i++)
+	    	{
+	    		if(Gdx.input.isKeyPressed(Keys.valueOf("F" + i)))
+	    		{
+	    			//TODO Change Car. Only avalible in dev-mode
+	    		}
+	    	}
+    	}
+    }
 }
