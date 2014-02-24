@@ -10,7 +10,7 @@ public class Car {
 	private Texture carTexture;
 	private Sprite carSprite;
 	
-	//Rectangle RecCar;
+	Rectangle RecCar;
 	
 	private int carTurn;
 	
@@ -55,6 +55,9 @@ public class Car {
     	this.engine = engine;
     	this.weight = weight;
     	this.turnability = turnability;
+    	RecCar = new Rectangle();
+    	RecCar.setHeight(height);
+    	RecCar.setWidth(width);
     }
 
    public Sprite getSprite()
@@ -65,5 +68,10 @@ public class Car {
    public int getTurnability()
    {
 	   return turnability;
+   }
+   
+   public Rectangle getRectangle()
+   {
+	   return RecCar;
    }
 }

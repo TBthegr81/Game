@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
     final GBS game;
-    int gameWidth = 1920;
+    int gameWidth =1920;
     int gameHeight = 1080;
     
     Texture bg;
@@ -159,7 +159,7 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
         //Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
         
-        highbeam = new Texture(Gdx.files.internal("highbeam.png"));
+        highbeam = new Texture(Gdx.files.internal("Cars/Highbeam.png"));
         highbeam_sprite = new Sprite(highbeam);
         
         rotorblad = new Texture(Gdx.files.internal("Flyers/rotorblad.png"));
@@ -170,7 +170,7 @@ public class GameScreen implements Screen {
         //taxiSprite.setPosition(1, 1);
         //taxiSprite.setRotation(taxiSprite.getRotation() - 90);    
         
-        bg = new Texture(Gdx.files.internal("bg.png"));
+        //bg = new Texture(Gdx.files.internal("bg.png"));
         //bg.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         //setTextureWrap(TextureWrap.GL_REPEAT)
         
@@ -247,7 +247,7 @@ public class GameScreen implements Screen {
 
     private void spawnRaindrop(boolean thing) {
         //Rectangle taxi = new Rectangle();
-        Rectangle taxi = Cars.get(0).getSprite().getBoundingRectangle();
+        Rectangle taxi = Cars.get(0).getRectangle();
         //taxi.width = 64;
         //taxi.height = 128;
         if(thing){
@@ -284,7 +284,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
     	calcDT();
-    	Rectangle playerCar = Cars.get(car).getSprite().getBoundingRectangle();
+    	Rectangle playerCar = Cars.get(car).getRectangle();
     	fps++;
     	fpsLogger.log();
     	PooledEffect effect = bombEffectPool.obtain();
@@ -320,7 +320,7 @@ public class GameScreen implements Screen {
         
         game.batch.begin();
         //game.batch.draw(texture, x, y);
-        game.batch.draw(bg,0,0);
+        //game.batch.draw(bg,0,0);
         for (int i = effects.size - 1; i >= 0; i--) {
             effect = effects.get(i);
             effect.draw(game.batch, delta);
