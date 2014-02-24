@@ -79,7 +79,9 @@ public class GameScreen implements Screen {
 	int car;
 	int turnability;
 	ParticleEffectPool bombEffectPool;
+	
 	Array<PooledEffect> effects = new Array();
+	Array<PooledEffect> effects2 = new Array();
 	Array<Checkpoint> checkpoints = new Array();
 	Array<Car> Cars = new Array();
 	Array<Rectangle> taxis;
@@ -157,6 +159,11 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Panoz_Roadster", 64, 128, 4, 10, 2));
         Cars.add(new Car("Volvo_copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
+        Cars.add(new Car("Porche_911", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Koenigsegg_Agera", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Lamborghini_Gallardo", 64, 128, 5, 4, 2));
+        Cars.add(new Car("F1_Racer", 64, 128, 5, 4, 2));
+        
         //Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
         
         highbeam = new Texture(Gdx.files.internal("Cars/Highbeam.png"));
@@ -288,9 +295,12 @@ public class GameScreen implements Screen {
     	fps++;
     	fpsLogger.log();
     	PooledEffect effect = bombEffectPool.obtain();
+    	PooledEffect effect2 = bombEffectPool.obtain();
     	effect.setPosition(playerCar.x + playerCar.width, (playerCar.y + (playerCar.height / 2)));
+    	effect2.setPosition(playerCar.x, (playerCar.y + 50));
     	
     	effects.add(effect);
+    	effects2.add(effect2);
     	
     	//Move Camera to center of car
     	
@@ -327,6 +337,14 @@ public class GameScreen implements Screen {
             if (effect.isComplete()) {
                 effect.free();
                 effects.removeIndex(i);
+            }
+        }
+        for (int i = effects2.size - 1; i >= 0; i--) {
+            effect = effects2.get(i);
+            effect.draw(game.batch, delta);
+            if (effect.isComplete()) {
+                effect.free();
+                effects2.removeIndex(i);
             }
         }
         game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
