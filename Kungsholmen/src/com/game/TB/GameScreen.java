@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 	
 	
 	Array<Rectangle> trains = new Array<Rectangle>();
-	int trainTurn;
+	float trainTurn;
 	int nextNode;
 	int lastNode;
 	
@@ -163,6 +163,9 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Koenigsegg_Agera", 64, 128, 5, 4, 2));
         Cars.add(new Car("Lamborghini_Gallardo", 64, 128, 5, 4, 2));
         Cars.add(new Car("F1_Racer", 64, 128, 5, 4, 2));
+        Cars.add(new Car("BAC_Mono", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Subaru_Impreza", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Lancia_037", 64, 128, 5, 4, 2));
         
         //Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
         
@@ -277,15 +280,15 @@ public class GameScreen implements Screen {
         dirVecty = 0;
     }
     
-    /*private void drawCheckpoint(Checkpoint checkpoint)
+    private void drawCheckpoint(Checkpoint checkpoint)
     {
-    	int x = checkpoint.get
-    	int y
-    	int degrees
-    	game.batch.draw(checkpointPillarSprite, x, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
-    	game.batch.draw(checkpointFlagSprite, x+64, y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
-    	game.batch.draw(checkpointPillarSprite, x+256+64, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
-    }*/
+    	float x = checkpoint.getSprite().getX();
+    	float y = checkpoint.getSprite().getY();
+    	float degrees = checkpoint.getSprite().getRotation();
+    	//game.batch.draw(checkpointPillarSprite, x, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
+    	//game.batch.draw(checkpointFlagSprite, x+64, y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
+    	//game.batch.draw(checkpointPillarSprite, x+256+64, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
+    }
    
 
     @Override
@@ -496,12 +499,16 @@ public class GameScreen implements Screen {
         float lastNodeX = GreenLine.get(lastNode).getX();
         float lastNodeY = GreenLine.get(lastNode).getY();
         
-        float hiddenCX = nextNodeX - lastNodeX;
-        float hiddenCY = nextNodeY - lastNodeY;
-        //float distanceX = nextNodeX - train.x;
-        //float distanceY = nextNodeY - train.y;
-        Triangle tri = new Triangle(lastNodeX, lastNodeY, nextNodeX, nextNodeY, hiddenCX, hiddenCY);
-        trainTurn = (int) tri.getAngleB();
+        //float hiddenCX = nextNodeX - lastNodeX;
+        //float hiddenCY = nextNodeY - lastNodeY;
+        float distanceX = nextNodeX - lastNodeX;
+        float distanceY = nextNodeY + lastNodeY;
+        //Triangle tri = new Triangle(lastNodeX, lastNodeY, nextNodeX, nextNodeY, hiddenCX, hiddenCY);
+        //trainTurn = (int) tri.getAngleB();
+        System.out.println("NextNode: " + nextNodeX + " " + nextNodeY + " LastNode: " + lastNodeX + " " + lastNodeY);
+        System.out.println("Distance: " + distanceX + " " + distanceY);
+        trainTurn = (float) Math.atan(distanceX / distanceY);
+        System.out.println("TRAIN TURN:" + trainTurn);
         //calcTrainDegrees(distanceX,distanceY );
         for(int i = 0; i < trains.size; i++)
         {

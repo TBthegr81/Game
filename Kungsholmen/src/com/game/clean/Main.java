@@ -25,33 +25,10 @@ public class Main {
 	
 	public void loadTextures()
 	{
-		// Ground-based vehicles
-		Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_taxi.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_copcar.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Caddie.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_Monster.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Snowmobile.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/CityBus.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Radiant_9000.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Delorean_BTTF.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Kitt.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Truck.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Truck_IKEA.png"))); //10
+		//Train
 		Textures.add(new Texture(Gdx.files.internal("Cars/Train_engine.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Train_cart.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Panoz_Roadster.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Volvo_copcar.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Volvo_Ambulance.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Batmobile.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Ecto_1.png")));
-		Textures.add(new Texture(Gdx.files.internal("Cars/Radiant_9000_triwheel.png"))); //18
-		
-		// Flying vehicles
-		Textures.add(new Texture(Gdx.files.internal("Flyers/helicopter_apache.png")));
-		
-		// Floating vehicles
-		Textures.add(new Texture(Gdx.files.internal("Boats/Fisherboat.png")));
-		
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Train_cart.png")));
+
 		// Other things
 		Textures.add(new Texture(Gdx.files.internal("highbeam.png")));
 		Textures.add(new Texture(Gdx.files.internal("Flyers/rotorblad.png")));
@@ -106,37 +83,84 @@ public class Main {
          //System.out.println("DirectVelocityX: " + dirVectx + " DirectVelocityY: " + dirVecty);
     }
     
-    private void loadCars()
+    private void loadVehicles()
     {
-    	GameCars.add(new Car(Textures.get(0), 64, 128, 5, 2, 2)); //Caddie Taxi
-    	GameCars.add(new Car(Textures.get(1), 64, 128, 5, 4, 2)); //Caddie Copcar
-    	GameCars.add(new Car(Textures.get(2), 64, 128, 5, 2, 2)); //Caddie
-    	GameCars.add(new Car(Textures.get(3), 128, 128, 5, 6, 3)); //Caddie Monstertruck
-    	GameCars.add(new Car(Textures.get(4), 64, 128, 2, 4, 2)); //Snowmobile
-    	GameCars.add(new Car(Textures.get(5), 64, 256, 10, 2, 1)); //City Bus
-    	GameCars.add(new Car(Textures.get(6), 32, 64, 2, 4, 2)); //Radiant 9000 Motorcycle
-    	GameCars.add(new Car(Textures.get(7), 64, 128, 5, 4, 2)); //Delorean Back to the Future
-    	GameCars.add(new Car(Textures.get(8), 64, 128, 5, 5, 2)); //Knights Industries 2000 (KITT)
-    	GameCars.add(new Car(Textures.get(9), 64, 256, 10, 2, 1)); //Truck
-    	GameCars.add(new Car(Textures.get(10), 64, 256, 10, 2, 1)); //IKEA Truck
-    	GameCars.add(new Car(Textures.get(13), 64, 128, 4, 10, 2)); //Volvo V70 Copcar
-    	GameCars.add(new Car(Textures.get(14), 64, 128, 5, 4, 2)); //Volvo V70 Ambulance
-    	GameCars.add(new Car(Textures.get(15), 64, 160, 5, 4, 2)); //Panoz Roadster
-    	GameCars.add(new Car(Textures.get(16), 64, 256, 8, 10, 2)); //Tim Burtons Batmobile
-    	GameCars.add(new Car(Textures.get(17), 64, 256, 8, 6, 2)); //ECTO-1 Ghostbusters
-    	GameCars.add(new Car(Textures.get(18), 64, 64, 2, 4, 2)); //Radiant 9000 Motorcycle with Sidecarrige
-    }
-    
-    private void loadFlyers()
-    {
-    	//TODO Make Planes
-    	//Planes.add(new Plane());
-    	Helicopters.add(new Helicopter(Textures.get(19), 256, 128, 0,0,0)); //Apache Attack Helicopter
-    }
-    
-    private void loadBoats()
-    {
-    	Boats.add(new Boat(Textures.get(20), 256, 128, 0,0,0)); //Fisherboat
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_taxi.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Caddie Taxi
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_copcar.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 4, 2)); //Caddie Copcar
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_copcar_Undercover.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 4, 2)); //Caddie Copcar Undercover
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Caddie.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Caddie
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Caddie_Monster.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 128, 128, 5, 6, 3)); //Caddie Monstertruck
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Snowmobile.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 2, 4, 2)); //Snowmobile
+    	Textures.add(new Texture(Gdx.files.internal("Cars/CityBus.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 256, 10, 2, 1)); //City Bus
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Radiant_9000.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 32, 64, 2, 4, 2)); //Radiant 9000 Motorcycle
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Delorean_BTTF.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 4, 2)); //Delorean Back to the Future
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Kitt.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 5, 2)); //Knights Industries 2000 (KITT)
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Truck.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 256, 10, 2, 1)); //Truck
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Truck_IKEA.png"))); //10
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 256, 10, 2, 1)); //IKEA Truck
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Volvo_copcar.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 4, 10, 2)); //Volvo V70 Copcar
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Volvo_Ambulance.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 4, 2)); //Volvo V70 Ambulance
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Panoz_Roadster.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 160, 5, 4, 2)); //Panoz Roadster
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Batmobile.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 256, 8, 10, 2)); //Tim Burtons Batmobile
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Ecto_1.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 256, 8, 6, 2)); //ECTO-1 Ghostbusters
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Audi_R8_Spyder.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Audi R8 Spyder
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Audi_Quattro_A2.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Audi Quattro A2
+    	Textures.add(new Texture(Gdx.files.internal("Cars/BAC_Mono.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //BAC Mono
+    	Textures.add(new Texture(Gdx.files.internal("Cars/F1_Racer.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 256, 5, 2, 2)); //F1 Racer
+    	Textures.add(new Texture(Gdx.files.internal("Cars/GeneralLee.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //General Lee
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Go_Cart.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Go Cart
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Hippie_Bus.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Hippie Bus
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Jeep_Wrangler_Sahara.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Jeep Wrangler Sahara (Jurassic Park)
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Koenigsegg_Agera.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Koenigsegg Agera
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Lamborghini_Gallardo.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Lamborghini Gallardo
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Lancia_037.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Lancia 037
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Lancia_Delta_S4.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Lancia Delta S4
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Mad_Max_Interceptor_II.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Mad Max Interceptor II
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Mini_Cooper_Classic.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Mini Cooper Classic
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Pickuptruck.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Pickuptruck
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Porche_911.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Porche_911
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Rally_Car.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Rally_Car
+    	Textures.add(new Texture(Gdx.files.internal("Cars/Subaru_Impreza.png")));
+    	GameCars.add(new Car(Textures.get(Textures.size-1), 64, 128, 5, 2, 2)); //Subaru_Impreza
+    	
+    	Textures.add(new Texture(Gdx.files.internal("Flyers/helicopter_apache.png")));
+    	Helicopters.add(new Helicopter(Textures.get(Textures.size-1), 256, 128, 0,0,0)); //Apache Attack Helicopter
+    	
+    	Textures.add(new Texture(Gdx.files.internal("Boats/Fisherboat.png")));
+    	Boats.add(new Boat(Textures.get(Textures.size-1), 256, 128, 0,0,0)); //Fisherboat
     }
     
     /* TODO
