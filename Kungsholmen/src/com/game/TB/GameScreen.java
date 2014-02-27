@@ -502,7 +502,15 @@ public class GameScreen implements Screen {
         //float hiddenCX = nextNodeX - lastNodeX;
         //float hiddenCY = nextNodeY - lastNodeY;
         float distanceX = nextNodeX - lastNodeX;
-        float distanceY = nextNodeY + lastNodeY;
+        if(distanceX < 0)
+        {
+        	distanceX *= -1;
+        }
+        float distanceY = nextNodeY - lastNodeY;
+        if(distanceY < 0)
+        {
+        	distanceY *= -1;
+        }
         //Triangle tri = new Triangle(lastNodeX, lastNodeY, nextNodeX, nextNodeY, hiddenCX, hiddenCY);
         //trainTurn = (int) tri.getAngleB();
         System.out.println("NextNode: " + nextNodeX + " " + nextNodeY + " LastNode: " + lastNodeX + " " + lastNodeY);
