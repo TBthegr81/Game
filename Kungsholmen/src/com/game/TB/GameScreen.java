@@ -215,8 +215,8 @@ public class GameScreen implements Screen {
         //assetManager.load("level1.tmx", TiledMap.class);
         //map = assetManager.get("/tilemap/map2.tmx");
         //map = new TmxMapLoader(new ExternalFileHandleResolver()).load("/tilemap/map2.tmx");
-        map = new TmxMapLoader().load("map9.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
+        map = new TmxMapLoader().load("map.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, 1f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, gameWidth, gameHeight);
 
