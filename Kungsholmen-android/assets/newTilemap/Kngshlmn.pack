@@ -1,0 +1,26 @@
+
+Kngshlmn.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+terrain
+  rotate: false
+  xy: 1, 520
+  size: 640, 384
+  orig: 640, 384
+  offset: 0, 0
+  index: -1
+TrainRailAndNodes
+  rotate: false
+  xy: 1, 259
+  size: 519, 259
+  orig: 519, 259
+  offset: 0, 0
+  index: -1
+highway
+  rotate: false
+  xy: 1, 1
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1

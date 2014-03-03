@@ -5,6 +5,8 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,6 +15,11 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -38,7 +45,8 @@ public class GameScreen implements Screen {
     Sprite rotorbladSprite;
     //Sound dropSound;
     //Music rainMusic;
-    OrthographicCamera camera;
+    private OrthogonalTiledMapRenderer renderer;
+	private OrthographicCamera camera;
     //Rectangle playerCar;
     //Array<Rectangle> taxis;
     long lastDropTime;
@@ -86,6 +94,11 @@ public class GameScreen implements Screen {
 	Array<Car> Cars = new Array();
 	Array<Rectangle> taxis;
 	Array<PathNode> GreenLine = new Array();
+	
+	TiledMapRenderer tileMapRenderer;
+    TiledMap map;
+    TextureAtlas atlas;
+    AssetManager assetManager;
 	
     
     private void calcDT()
@@ -197,6 +210,13 @@ public class GameScreen implements Screen {
         //rainMusic.setLooping(true);
 
         // create the camera and the SpriteBatch
+        //assetManager = new AssetManager();
+        //assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        //assetManager.load("level1.tmx", TiledMap.class);
+        //map = assetManager.get("/tilemap/map2.tmx");
+        //map = new TmxMapLoader(new ExternalFileHandleResolver()).load("/tilemap/map2.tmx");
+        map = new TmxMapLoader().load("map9.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, gameWidth, gameHeight);
 
@@ -307,6 +327,8 @@ public class GameScreen implements Screen {
     	
     	//Move Camera to center of car
     	
+    	Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
     	float lerp = 0.1f;
     	Vector3 position = camera.position;
     	position.x += (playerCar.x - position.x) * lerp;
@@ -318,11 +340,12 @@ public class GameScreen implements Screen {
         // arguments to glClearColor are the red, green
         // blue and alpha component in the range [0,1]
         // of the color to be used to clear the screen.
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+        
         // tell the camera to update its matrices.
         camera.update();
+        
+        renderer.setView(camera);
+		renderer.render();
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
