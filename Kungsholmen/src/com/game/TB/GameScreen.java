@@ -172,6 +172,9 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Caddie_Taxi", 64, 128, 5, 2, 2));
 =======
         Cars.add(new Car("Caddie_taxi", 64, 128, 5, 2, 2));
+<<<<<<< HEAD
+>>>>>>> a4300b29b03638d48bd9471256d91fa5066622f6
+=======
 >>>>>>> a4300b29b03638d48bd9471256d91fa5066622f6
         Cars.add(new Car("Caddie_Copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Caddie", 64, 128, 5, 2, 2));
