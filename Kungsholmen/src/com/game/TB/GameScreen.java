@@ -6,7 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,7 +39,10 @@ public class GameScreen implements Screen {
     Texture playerImage;
     Texture highbeam;
     Sprite highbeam_sprite;
-    
+    Texture gaspedal;
+    Sprite gaspedal_sprite;
+    Texture bromspedal;
+    Sprite bromspedal_sprite;
     //Rectangle checkpoint;
     
     Texture rotorblad;
@@ -151,13 +155,21 @@ public class GameScreen implements Screen {
     	
     }
     
+    public void accelerate()
+    {
+    	VeloX *= .99;
+     	VeloY *= .99;
+		VeloX -= accforward * dirVectx * dt;
+     	VeloY -= accforward * dirVecty * dt;
+    }
+    
     
     public GameScreen(final GBS gam) {
         this.game = gam;
         car = 14;
         
-        Cars.add(new Car("Caddie_taxi", 64, 128, 5, 2, 2));
-        Cars.add(new Car("Caddie_copcar", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Caddie_Taxi", 64, 128, 5, 2, 2));
+        Cars.add(new Car("Caddie_Copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Caddie", 64, 128, 5, 2, 2));
         Cars.add(new Car("Caddie_Monster", 128, 128, 5, 6, 3));
         Cars.add(new Car("Snowmobile", 64, 128, 2, 4, 2));
@@ -167,10 +179,10 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Kitt", 64, 128, 5, 5, 2));
         Cars.add(new Car("Truck", 64, 256, 10, 2, 1));
         Cars.add(new Car("Truck_IKEA", 64, 256, 10, 2, 1));
-        Cars.add(new Car("Train_engine", 64, 256, 10, 2, 1));
-        Cars.add(new Car("Train_cart", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Train_Engine", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Train_Cart", 64, 256, 10, 2, 1));
         Cars.add(new Car("Panoz_Roadster", 64, 128, 4, 10, 2));
-        Cars.add(new Car("Volvo_copcar", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Volvo_Copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
         Cars.add(new Car("Porche_911", 64, 128, 5, 4, 2));
         Cars.add(new Car("Koenigsegg_Agera", 64, 128, 5, 4, 2));
@@ -184,6 +196,11 @@ public class GameScreen implements Screen {
         
         highbeam = new Texture(Gdx.files.internal("Cars/Highbeam.png"));
         highbeam_sprite = new Sprite(highbeam);
+        
+        gaspedal = new Texture(Gdx.files.internal("gaspedal.png"));
+        gaspedal_sprite = new Sprite(gaspedal);
+        bromspedal = new Texture(Gdx.files.internal("bromspedal.png"));
+        bromspedal_sprite = new Sprite(bromspedal);
         
         rotorblad = new Texture(Gdx.files.internal("Flyers/rotorblad.png"));
         rotorbladSprite = new Sprite(rotorblad);
@@ -412,15 +429,25 @@ public class GameScreen implements Screen {
         }
         //game.batch.draw(rotorbladSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), snurr);
        
+        //Gaspedal
+        game.batch.draw(gaspedal_sprite,camera.position.x+(gameWidth/2-256),camera.position.y);
+        game.batch.draw(bromspedal_sprite,camera.position.x-(gameWidth/2),camera.position.y);
         game.batch.end();
 
         // process user input
-        if (Gdx.input.isTouched()) {
+        /*if (Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            playerCar.x = touchPos.x - 64 / 2;
-        }
+            System.out.println("Touchpos: " + touchPos.x);
+            if(touchPos.x >= gaspedal_sprite.getBoundingRectangle().getX() )
+            	//&& touchPos.x <= gaspedal_sprite.getBoundingRectangle().getX()+gaspedal_sprite.getBoundingRectangle().getWidth()
+            {
+            	accelerate();
+            }
+            		
+            //playerCar.x = touchPos.x - 64 / 2;
+        }*/
         //double angle = (TimeUtils.millis()*speedScale);
         calcDirectionVector();
         if (Gdx.input.isKeyPressed(Keys.LEFT))
@@ -491,6 +518,7 @@ public class GameScreen implements Screen {
              }*/
 	        	//VeloX *= .99;
 	         	//VeloY *= .99;
+        	
             	VeloX -= accforward * dirVectx * dt;
             	VeloY -= accforward * dirVecty * dt;
             	//pos.x += vel.x * dt
