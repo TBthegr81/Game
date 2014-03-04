@@ -168,14 +168,7 @@ public class GameScreen implements Screen {
         this.game = gam;
         car = 14;
         
-<<<<<<< HEAD
         Cars.add(new Car("Caddie_Taxi", 64, 128, 5, 2, 2));
-=======
-        Cars.add(new Car("Caddie_taxi", 64, 128, 5, 2, 2));
-<<<<<<< HEAD
->>>>>>> a4300b29b03638d48bd9471256d91fa5066622f6
-=======
->>>>>>> a4300b29b03638d48bd9471256d91fa5066622f6
         Cars.add(new Car("Caddie_Copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Caddie", 64, 128, 5, 2, 2));
         Cars.add(new Car("Caddie_Monster", 128, 128, 5, 6, 3));
@@ -186,17 +179,10 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Kitt", 64, 128, 5, 5, 2));
         Cars.add(new Car("Truck", 64, 256, 10, 2, 1));
         Cars.add(new Car("Truck_IKEA", 64, 256, 10, 2, 1));
-<<<<<<< HEAD
         Cars.add(new Car("Train_Engine", 64, 256, 10, 2, 1));
         Cars.add(new Car("Train_Cart", 64, 256, 10, 2, 1));
         Cars.add(new Car("Panoz_Roadster", 64, 128, 4, 10, 2));
         Cars.add(new Car("Volvo_Copcar", 64, 128, 5, 4, 2));
-=======
-        Cars.add(new Car("Train_engine", 64, 256, 10, 2, 1));
-        Cars.add(new Car("Train_cart", 64, 256, 10, 2, 1));
-        Cars.add(new Car("panoz_roadster", 64, 128, 4, 10, 2));
-        Cars.add(new Car("Volvo_copcar", 64, 128, 5, 4, 2));
->>>>>>> a4300b29b03638d48bd9471256d91fa5066622f6
         Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
         Cars.add(new Car("Porche_911", 64, 128, 5, 4, 2));
         Cars.add(new Car("Koenigsegg_Agera", 64, 128, 5, 4, 2));
