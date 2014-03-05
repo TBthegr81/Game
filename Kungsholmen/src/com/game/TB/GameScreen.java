@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -28,16 +27,18 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
     final GBS game;
-    int gameWidth =1920;
-    int gameHeight = 1080;
+    int gameWidth =1024;
+    int gameHeight = 1024;
     
     Texture bg;
     Texture taxiImage;
     Sprite taxiSprite;
     Sprite playerSprite;
     Texture playerImage;
-    Texture highbeam;
-    Sprite highbeam_sprite;
+    Texture gaspedal;
+    Sprite gaspedal_sprite;
+    Texture bromspedal;
+    Sprite bromspedal_sprite;
     
     //Rectangle checkpoint;
     
@@ -62,6 +63,8 @@ public class GameScreen implements Screen {
 
     double VeloX;
     double VeloY;
+    
+
     
     double accforward = 0.001;
     
@@ -156,7 +159,7 @@ public class GameScreen implements Screen {
         this.game = gam;
         car = 14;
         
-        Cars.add(new Car("Caddie_taxi", 64, 128, 5, 2, 2));
+        Cars.add(new Car("Caddie_Taxi", 64, 128, 5, 2, 2));
         Cars.add(new Car("Caddie_Copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Caddie", 64, 128, 5, 2, 2));
         Cars.add(new Car("Caddie_Monster", 128, 128, 5, 6, 3));
@@ -167,10 +170,10 @@ public class GameScreen implements Screen {
         Cars.add(new Car("Kitt", 64, 128, 5, 5, 2));
         Cars.add(new Car("Truck", 64, 256, 10, 2, 1));
         Cars.add(new Car("Truck_IKEA", 64, 256, 10, 2, 1));
-        Cars.add(new Car("Train_engine", 64, 256, 10, 2, 1));
-        Cars.add(new Car("Train_cart", 64, 256, 10, 2, 1));
-        Cars.add(new Car("panoz_roadster", 64, 128, 4, 10, 2));
-        Cars.add(new Car("Volvo_copcar", 64, 128, 5, 4, 2));
+        Cars.add(new Car("Train_Engine", 64, 256, 10, 2, 1));
+        Cars.add(new Car("Train_Cart", 64, 256, 10, 2, 1));
+        Cars.add(new Car("panoz_Roadster", 64, 128, 4, 10, 2));
+        Cars.add(new Car("Volvo_Copcar", 64, 128, 5, 4, 2));
         Cars.add(new Car("Volvo_Ambulance", 64, 160, 5, 4, 2));
         Cars.add(new Car("Porche_911", 64, 128, 5, 4, 2));
         Cars.add(new Car("Koenigsegg_Agera", 64, 128, 5, 4, 2));
@@ -182,8 +185,12 @@ public class GameScreen implements Screen {
         
         //Cars.add(new Car("helicopter_apache", 128, 256, 5, 4, 2));
         
-        highbeam = new Texture(Gdx.files.internal("Cars/Highbeam.png"));
-        highbeam_sprite = new Sprite(highbeam);
+        gaspedal = new Texture(Gdx.files.internal("gaspedal.png"));
+        gaspedal_sprite = new Sprite(gaspedal);
+        //gaspedal_sprite.setPosition(0, 1);
+        bromspedal = new Texture(Gdx.files.internal("bromspedal.png"));
+        bromspedal_sprite = new Sprite(bromspedal);
+        
         
         rotorblad = new Texture(Gdx.files.internal("Flyers/rotorblad.png"));
         rotorbladSprite = new Sprite(rotorblad);
@@ -309,6 +316,28 @@ public class GameScreen implements Screen {
     	//game.batch.draw(checkpointFlagSprite, x+64, y+64, checkpointFlagSprite.getOriginX(), checkpointFlagSprite.getOriginY(), checkpointFlagSprite.getWidth(), checkpointFlagSprite.getHeight(), checkpointFlagSprite.getScaleX(), checkpointFlagSprite.getScaleY(), degrees);
     	//game.batch.draw(checkpointPillarSprite, x+256+64, y, checkpointPillarSprite.getOriginX(), checkpointPillarSprite.getOriginY(), checkpointPillarSprite.getWidth(), checkpointPillarSprite.getHeight(), checkpointPillarSprite.getScaleX(), checkpointPillarSprite.getScaleY(), degrees);
     }
+    
+    private boolean isSpriteTouched(Sprite sprite)
+    {
+    	if(Gdx.input.isTouched())
+    	{
+    		Vector3 touchPos = new Vector3();
+    		touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+    		camera.unproject(touchPos);
+    		//Point touchPos = new Point(Gdx.input.getX(), Gdx.input.getY());
+        	System.out.println("Touch Pos Raw: " + touchPos.x + ","+touchPos.y);
+        	//Rectangle spriteRect = sprite.getBoundingRectangle();
+        	if(touchPos.x >= sprite.getX() && sprite.getX()  <= sprite.getX()  + sprite.getWidth())
+        	{
+        		if(touchPos.y >= sprite.getY() && sprite.getY()  <= sprite.getY()  + sprite.getHeight())
+        		{
+        			System.out.println(sprite + " is touched");
+        			return true;
+        		}
+        	}
+    	}
+    	return false;
+    }
    
 
     @Override
@@ -376,7 +405,9 @@ public class GameScreen implements Screen {
         game.font.draw(game.batch, "FPS: " + lastFPS, playerCar.x, playerCar.y);
         game.font.draw(game.batch, "Pos: x" + playerCar.x + " y" +playerCar.y, playerCar.x, playerCar.y-20);
         game.batch.draw(playerSprite, playerCar.x, playerCar.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
-        
+        bromspedal_sprite.setPosition(camera.position.x-gameWidth/2, camera.position.y-512-25);
+        game.batch.draw(bromspedal_sprite, bromspedal_sprite.getX(), bromspedal_sprite.getY());
+        game.batch.draw(gaspedal_sprite, camera.position.x-gameWidth/2, camera.position.y);
         //game.batch.draw(playerSprite, playerCar.x, playerCar.y);
        //game.batch.draw(highbeam_sprite, playerCar.x, playerCar.y, highbeam_sprite.getOriginX(), highbeam_sprite.getOriginY(), highbeam_sprite.getWidth(), highbeam_sprite.getHeight(), highbeam_sprite.getScaleX(), highbeam_sprite.getScaleY(), playerTurn);
         //game.batch.draw(playerSprite, thing.x, thing.y, playerSprite.getOriginX(), playerSprite.getOriginY(), playerSprite.getWidth(), playerSprite.getHeight(), playerSprite.getScaleX(), playerSprite.getScaleY(), playerTurn);
@@ -415,34 +446,33 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         // process user input
-        if (Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            playerCar.x = touchPos.x - 64 / 2;
-        }
         //double angle = (TimeUtils.millis()*speedScale);
         calcDirectionVector();
+       
+        if (Gdx.input.isTouched()) {
+        	Point touchPos = new Point(Gdx.input.getX(), Gdx.input.getY());
+        	System.out.println("Touch Pos Raw: " + touchPos.x + ","+touchPos.y);
+        }
         if (Gdx.input.isKeyPressed(Keys.LEFT))
         {
     		turn(false);
     		//playerCar.x = (float) (circleX + Math.sin(angle)*radius);
         	//playerCar.y = (float) (circleY + Math.cos(angle)*radius);
-        	if (Gdx.input.isKeyPressed(Keys.UP))
+        	if (Gdx.input.isKeyPressed(Keys.UP) || isSpriteTouched(gaspedal_sprite))
             {
         		VeloX *= .99;
              	VeloY *= .99;
         		VeloX -= accforward * dirVectx * dt;
              	VeloY -= accforward * dirVecty * dt;
             }
-        	else if (Gdx.input.isKeyPressed(Keys.DOWN))
+        	else if (Gdx.input.isKeyPressed(Keys.DOWN) || isSpriteTouched(bromspedal_sprite))
             {
             	VeloX += accforward * dirVectx * dt;
             	VeloY += accforward * dirVecty * dt;
             }
         	
         }
-        	
+        
         else if (Gdx.input.isKeyPressed(Keys.RIGHT))
         {
         	turn(true);
@@ -451,14 +481,14 @@ public class GameScreen implements Screen {
         	VeloX *= .99;
         	VeloY *= .99;
         	VeloY += accforward * dirVecty * dt;*/
-        	if (Gdx.input.isKeyPressed(Keys.UP))
+        	if (Gdx.input.isKeyPressed(Keys.UP) || isSpriteTouched(gaspedal_sprite))
             {
         		VeloX *= .99;
              	VeloY *= .99;
         		VeloX -= accforward * dirVectx * dt;
              	VeloY -= accforward * dirVecty * dt;
             }
-        	else if (Gdx.input.isKeyPressed(Keys.DOWN))
+        	else if (Gdx.input.isKeyPressed(Keys.DOWN)  || isSpriteTouched(bromspedal_sprite))
             {
             	VeloX += accforward * dirVectx * dt;
             	VeloY += accforward * dirVecty * dt;
@@ -466,7 +496,7 @@ public class GameScreen implements Screen {
             }
 
         }
-        else if (Gdx.input.isKeyPressed(Keys.UP))
+        else if (Gdx.input.isKeyPressed(Keys.UP) || isSpriteTouched(gaspedal_sprite))
         {
         	 /*if (Gdx.input.isKeyPressed(Keys.LEFT))
              {
@@ -496,7 +526,7 @@ public class GameScreen implements Screen {
             	//pos.x += vel.x * dt
             	//pos.y += vel.y * dt
         }
-        else if (Gdx.input.isKeyPressed(Keys.DOWN))
+        else if (Gdx.input.isKeyPressed(Keys.DOWN) || isSpriteTouched(bromspedal_sprite))
         {
         	VeloX += accforward * dirVectx * dt;
         	VeloY += accforward * dirVecty * dt;
