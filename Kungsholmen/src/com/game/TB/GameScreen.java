@@ -28,7 +28,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class GameScreen implements Screen {
     final GBS game;
     int gameWidth =1024;
-    int gameHeight = 1024;
+    int gameHeight = 600;
     
     Texture bg;
     Texture taxiImage;
