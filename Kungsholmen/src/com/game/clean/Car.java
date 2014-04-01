@@ -5,16 +5,22 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Car {
+	@SuppressWarnings("unused")
 	private double accforward = 0.001;
+	@SuppressWarnings("unused")
 	private int hp;
 	private double weight;
 	private int engine;
 	private int turnability;
 	private Texture Texture;
+	private Sprite Sprite;
+	private String description;
+	private String name;
 	
-	public Car(Texture Texture, int width, int height, int weight, int engine, int turnability)
+	public Car(String carname, int width, int height, int weight, int engine, int turnability)
     {
-    	this.Texture = Texture;
+    	this.Texture = new Texture(Gdx.files.internal("Cars/" + carname + ".png"));
+    	Sprite = new Sprite(Texture);
     	//System.out.println("Width: " + width + " Height: " + height);
     	this.engine = engine;
     	this.weight = weight;
@@ -40,5 +46,30 @@ public class Car {
 	{
 		return engine;
 	}
+	
+	public void setDescription(String description)
+	{
+		this.description = description;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public Sprite getSprite()
+	   {
+		   return Sprite;
+	   }
 	
 }

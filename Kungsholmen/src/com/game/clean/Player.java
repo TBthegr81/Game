@@ -11,8 +11,11 @@ public class Player {
     boolean leftHeld = false, rightHeld = false;
     boolean upHeld = false, downHeld = false;
 	//vehicle controls
+    @SuppressWarnings("unused")
     private float steering = 0; //-1 is left, 0 is center, 1 is right
+    @SuppressWarnings("unused")
     private float throttle = 0; //0 is coasting, 1 is full throttle
+    @SuppressWarnings("unused")
     private float brakes = 0; //0 is no brakes, 1 is full brakes
 	
 	public Player(Point locaction, int direction, Car startCar, String name)
@@ -20,6 +23,11 @@ public class Player {
 		this.name = name;
 		this.currentCar = startCar;
 		//this.direction = direction;
+	}
+	
+	public Player()
+	{
+		
 	}
 	
 	/*public int getDirection()
@@ -58,7 +66,7 @@ public class Player {
 	}
 	
 	//process keyboard input
-    private void ProcessInput()
+    public void ProcessInput()
     {
         if (leftHeld)
             steering = -1;

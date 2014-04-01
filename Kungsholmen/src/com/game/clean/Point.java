@@ -10,12 +10,12 @@ public class Point {
 		this.y = y;
 	}
 	
-	public float getX()
+	public float x()
 	{
 		return x;
 	}
 	
-	public float getY()
+	public float y()
 	{
 		return y;
 	}
@@ -28,5 +28,10 @@ public class Point {
 	public void setY(float y)
 	{
 		this.y = y;
+	}
+	
+	public String toString()
+	{
+		return "X: " + x + " Y: " + y;
 	}
 }
