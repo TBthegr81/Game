@@ -13,9 +13,7 @@ public class SplashScreen implements Screen{
 	private SpriteBatch spriteBatch;
     private Texture splsh;
     //private Game myGame;
-    @SuppressWarnings("unused")
-	private BitmapFont font;
-    private BitmapFont font2;
+    private BitmapFont font;
     private CharSequence str;
     int width = Gdx.graphics.getWidth();
     int height = Gdx.graphics.getHeight();
@@ -38,27 +36,27 @@ public class SplashScreen implements Screen{
         spriteBatch.draw(splsh, 0, 0, width, height);
         
         str = "Version" + 0.6;
-        font2.draw(spriteBatch,str,0,0);
+        font.draw(spriteBatch,str,0,0);
         //New Game
         spriteBatch.draw(menu_button_sprite, 10, height-200);
         str =  "New Game";
-        font2.draw(spriteBatch, str, 30, height-200+50);
+        font.draw(spriteBatch, str, 30, height-200+50);
         //Load Game
         spriteBatch.draw(menu_button_sprite, 10, height-300);
         str =  "Load Game";
-        font2.draw(spriteBatch, str, 30, height-300+50);
+        font.draw(spriteBatch, str, 30, height-300+50);
         //Multiplayer
         spriteBatch.draw(menu_button_sprite, 10, height-400);
         str =  "Multiplayer";
-        font2.draw(spriteBatch, str, 30, height-400+50);
+        font.draw(spriteBatch, str, 30, height-400+50);
         //Settings
         spriteBatch.draw(menu_button_sprite, 10, height-500);
         str =  "Settings";
-        font2.draw(spriteBatch, str, 30, height-500+50);
+        font.draw(spriteBatch, str, 30, height-500+50);
         //Exit to DOS
         spriteBatch.draw(menu_button_sprite, 10, height-600);
         str =  "Exit to DOS";
-        font2.draw(spriteBatch, str, 30, height-600+50);
+        font.draw(spriteBatch, str, 30, height-600+50);
         spriteBatch.end();
         
         if(Gdx.input.justTouched())
@@ -66,35 +64,35 @@ public class SplashScreen implements Screen{
         	//Check witch button was pressed.
         	touchPos = new Point(Gdx.input.getX(), Gdx.input.getY());
         	System.out.println(touchPos);
-        	if(touchPos.x <= 256+10)
+        	if(touchPos.x() <= 256+10)
         	{
         		//If touchpos is below 200, one of the buttons where probably pressed
         		//Now we check each button seperatly
-        		if(touchPos.y>= 200-64 && touchPos.y<= 200)
+        		if(touchPos.y()>= 200-64 && touchPos.y()<= 200)
         		{
         			//New game is pressed
         			System.out.println("Pressed New Game");
         			game.setScreen(new ChooseCarScreen(game));
         		}
-        		else if(touchPos.y>= 300-64 && touchPos.y<= 300)
+        		else if(touchPos.y()>= 300-64 && touchPos.y()<= 300)
         		{
         			//Load Game is pressed
         			System.out.println("Pressed Load Game");
         			game.setScreen(new LoadGameScreen(game));
         		}
-        		else if(touchPos.y>= 400-64 && touchPos.y<= 400)
+        		else if(touchPos.y()>= 400-64 && touchPos.y()<= 400)
         		{
         			//Load Game is pressed
         			System.out.println("Pressed Multiplayer");
         			game.setScreen(new MultiplayerScreen(game));
         		}
-        		else if(touchPos.y>= 500-64 && touchPos.y<= 500)
+        		else if(touchPos.y()>= 500-64 && touchPos.y()<= 500)
         		{
         			//Load Game is pressed
         			System.out.println("Pressed Settings");
         			game.setScreen(new SettingsScreen(game));
         		}
-        		else if(touchPos.y>= 600-64 && touchPos.y<= 600)
+        		else if(touchPos.y()>= 600-64 && touchPos.y()<= 600)
         		{
         			//Load Game is pressed
         			System.out.println("Pressed Exit to DOS");
@@ -123,16 +121,14 @@ public class SplashScreen implements Screen{
 		spriteBatch = new SpriteBatch();
 		Resources.loadBackgrounds();
 		splsh = Resources.getBackgrounds().get(0);
-        Resources.loadFonts();
-        Resources.loadButtons();
-		
-		font = Resources.getFonts().get(0);
-		font2 = Resources.getFonts().get(1);
-   
-        menu_button_sprite = new Sprite(Resources.getButtons().get(6));
-
+        
+        font = new BitmapFont(Gdx.files.internal("Fonts/test.fnt"),
+        Gdx.files.internal("Fonts/test.png"), false);
+        
+        menu_button =  new Texture(Gdx.files.internal("Menu_Button.png"));
+        menu_button_sprite = new Sprite(menu_button);
+        
         Resources.loadVehicles2();
-        Resources.randNPCs(30);
 	}
 
 	@Override

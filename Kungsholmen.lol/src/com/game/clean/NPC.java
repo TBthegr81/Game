@@ -5,12 +5,10 @@ public class NPC {
 	@SuppressWarnings("unused")
 	private int type;
 	private Point location;
-	boolean direction;
 	
-	public NPC(Car car, boolean direction)
+	public NPC(Car car)
 	{
 		this.car = car;
-		this.direction = direction;
 	}
 	
 	public Car getCar()
@@ -26,10 +24,5 @@ public class NPC {
 	public Point getLocation()
 	{
 		return location;
-	}
-	
-	public boolean getDirection()
-	{
-		return direction;
 	}
 }

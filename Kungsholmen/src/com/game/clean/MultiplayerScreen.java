@@ -46,7 +46,7 @@ public class MultiplayerScreen implements Screen{
         	touchPos = new Point(Gdx.input.getX(), Gdx.input.getY());
         	System.out.println(touchPos);
         	
-        	if(touchPos.x() <= 256+10 && touchPos.y()>= height-50-64 && touchPos.y()<= height-50)
+        	if(touchPos.x <= 256+10 && touchPos.y>= height-50-64 && touchPos.y<= height-50)
         	{
         		System.out.println("Pressed Back");
         		game.setScreen(new SplashScreen(game));
@@ -65,11 +65,9 @@ public class MultiplayerScreen implements Screen{
 		spriteBatch = new SpriteBatch();
         splsh = Resources.getBackgrounds().get(0);
         
-        font = new BitmapFont(Gdx.files.internal("Fonts/test.fnt"),
-        Gdx.files.internal("Fonts/test.png"), false);
+        font = Resources.getFonts().get(0);
         
-        menu_button =  new Texture(Gdx.files.internal("Menu_Button.png"));
-        menu_button_sprite = new Sprite(menu_button);
+        menu_button_sprite = new Sprite(Resources.getButtons().get(6));
 	}
 
 	@Override

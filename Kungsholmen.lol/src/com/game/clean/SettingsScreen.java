@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class LoadGameScreen implements Screen{
+public class SettingsScreen implements Screen{
 	final KungsholmenGame game;
 	private SpriteBatch spriteBatch;
 	private Texture splsh;
@@ -21,24 +21,24 @@ public class LoadGameScreen implements Screen{
     Texture menu_button;
     Sprite menu_button_sprite;
     
-    public LoadGameScreen(KungsholmenGame game)
+    public SettingsScreen(KungsholmenGame game)
     {
-    	this.game = game;
+            this.game = game;
     }
-    
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         spriteBatch.begin();
         spriteBatch.draw(splsh, 0, 0, width, height);
         
-		str =  "Load Game";
+		str =  "Settings";
         font.draw(spriteBatch, str, 30, height-30);
         
         //Back button
         spriteBatch.draw(menu_button_sprite, 10, 50);
         str =  "Back";
         font.draw(spriteBatch, str, 30, 100);
+        
         spriteBatch.end();
         
         if(Gdx.input.justTouched())
@@ -46,7 +46,7 @@ public class LoadGameScreen implements Screen{
         	touchPos = new Point(Gdx.input.getX(), Gdx.input.getY());
         	System.out.println(touchPos);
         	
-        	if(touchPos.x <= 256+10 && touchPos.y>= height-50-64 && touchPos.y<= height-50)
+        	if(touchPos.x() <= 256+10 && touchPos.y()>= height-50-64 && touchPos.y()<= height-50)
         	{
         		System.out.println("Pressed Back");
         		game.setScreen(new SplashScreen(game));
@@ -65,9 +65,11 @@ public class LoadGameScreen implements Screen{
 		spriteBatch = new SpriteBatch();
 		splsh = Resources.getBackgrounds().get(0);
         
-		font = Resources.getFonts().get(0);
+        font = new BitmapFont(Gdx.files.internal("Fonts/test.fnt"),
+        Gdx.files.internal("Fonts/test.png"), false);
         
-		menu_button_sprite = new Sprite(Resources.getButtons().get(6));
+        menu_button =  new Texture(Gdx.files.internal("Menu_Button.png"));
+        menu_button_sprite = new Sprite(menu_button);
 	}
 
 	@Override

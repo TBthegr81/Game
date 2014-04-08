@@ -40,7 +40,7 @@ public class Resources {
 	private static boolean carsLoaded = false;
 	
 	long previousTime = TimeUtils.millis();
-	 
+	
 	public void loadTextures()
 	{
 		//Train
@@ -104,7 +104,6 @@ public class Resources {
 	{
 		Backgrounds.add(new Texture(Gdx.files.internal("splash.gif")));
 		Backgrounds.add(new Texture(Gdx.files.internal("garage.gif")));
-		Backgrounds.add(new Texture(Gdx.files.internal("map.png")));
 	}
 	public static void loadVehicles()
 	{
@@ -360,7 +359,7 @@ public class Resources {
     {
     	for(int i = 0; i < ammount; i++)
     	{
-    		NPCs.add(new NPC(Cars.get(MathUtils.random(0, Cars.size-1)), MathUtils.randomBoolean()));
+    		NPCs.add(new NPC(Cars.get(MathUtils.random(0, Cars.size-1))));
     	}
     }
     
